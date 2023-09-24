@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <SuccessResetPassword/>
+        <ForgotPassword/>
       </div>
     </div>
   );
