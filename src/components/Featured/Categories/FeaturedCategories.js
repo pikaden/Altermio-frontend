@@ -3,9 +3,9 @@ import { FeatureCategoryContext } from "../../../Context/FeaturedCategoryContext
 import CategoryCard from "../../Card/FeaturedCard/CategoryCard";
 import './FeaturedCategories.css'
 
-const Categories = () => {
-    const featuredCategories = useContext(FeatureCategoryContext)
-    
+const Categories = (props) => {
+    const categoryImage = useContext(FeatureCategoryContext);
+
     return ( 
         <div className="featured__categories__container">
             <div className="featured__categories">
@@ -14,7 +14,7 @@ const Categories = () => {
                     <div className="featured__categories__header__line"></div>
                 </div>
                 <div className="featured__categories__card__container">
-                    { featuredCategories.map((category) =>  <CategoryCard key={category.id} data={category}/>)}
+                    { props.items.map((category, index) =>  <CategoryCard key={category._id} data={category} categoryImage={categoryImage[index].image}/>)}
                 </div>
             </div>
         </div>  
