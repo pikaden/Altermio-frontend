@@ -9,25 +9,19 @@ const ProductView = (props) => {
     const [item, setItem] = useState()
     const [loading, setLoading] = useState(true)
 
-    const fetchProduct = async () => {
-        // get product by id
-        await axios.get(`http://localhost:3000/v1/products/${param.id}`)
-            .then(res => {
-                // const imageRes = res.data ?
-                //     res.data.image.url :
-                //     defaultImageUrl;
-                // setImageUrl(imageRes);
-
-                const product = res.data;
-                setItem(product);
-
-                setLoading(false);
-            })
-            .catch(err => console.log(err))
-    }
-
     useEffect(() => {
         window.scrollTo(0, 0)
+        const fetchProduct = async () => {
+            // get product by id
+            await axios.get(`http://localhost:3000/v1/products/${param.id}`)
+                .then(res => {
+                    const product = res.data;
+                    setItem(product);
+    
+                    setLoading(false);
+                })
+                .catch(err => console.log(err))
+        }
         fetchProduct();
     }, [param.id])
 
