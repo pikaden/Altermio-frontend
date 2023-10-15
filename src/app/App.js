@@ -20,6 +20,7 @@ import WishItemsProvider from '../Context/WishItemsProvider';
 import DrawerNav from '../components/Nav/DrawerNav/DrawerNav';
 import Checkout from '../components/Checkout/Checkout';
 import SearchProvider from '../Context/SearchProvider';
+import AdminPage from '../components/Admin/AdminPage';
 
 function App() {
 
@@ -28,7 +29,7 @@ function App() {
       <WishItemsProvider>
         <SearchProvider>
           <Router >
-            <Header />
+            {/* <Header /> */}
             <Routes>
               <Route index element={<Home />}/>
               <Route path="/account">
@@ -58,11 +59,11 @@ function App() {
               </Route>
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/search/*" element={<SearchView />} />
-            </Routes>
-            <Footer />
+            </Routes>          
             <Routes>
-            <Route path="/admin" element={<Wishlist />} />
+            <Route path="/admin" element={<AdminPage />} />
             </Routes>
+            {/* <Footer /> */}
           </Router>
         </SearchProvider>
       </WishItemsProvider>
