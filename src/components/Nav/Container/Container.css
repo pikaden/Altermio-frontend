@@ -19,7 +19,7 @@
     height: auto;
     width: auto;
     z-index: 1000;
-    padding-left: 5%;
+    padding-left: 20%;
 }
 
 .drawer {
@@ -35,7 +35,7 @@
     display: flex;
     align-items: center;
     flex-direction: row;
-    padding-left: 15px;
+    padding-left: 40px;
 }
 
 .nav {

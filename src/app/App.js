@@ -29,7 +29,7 @@ function App() {
       <WishItemsProvider>
         <SearchProvider>
           <Router >
-            {/* <Header /> */}
+            <Header />
             <Routes>
               <Route index element={<Home />}/>
               <Route path="/account">
