@@ -1,5 +1,5 @@
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Route , Routes} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -25,26 +25,32 @@ import AdminPage from '../components/Admin/AdminPage';
 function App() {
 
   return (
-   <CartItemsProvider>
+    <CartItemsProvider>
       <WishItemsProvider>
         <SearchProvider>
           <Router >
             <Header />
             <Routes>
-              <Route index element={<Home />}/>
+              <Route index element={<Home />} />
               <Route path="/account">
-                <Route path="me" element={<MyAccount/>}/>
-                <Route path="manage" element={<ManageAccount/>}/>
-                <Route path="login" element={<Login />}/>
-                <Route path="register" element={<Register />}/>
-                <Route path="*" element={<Login />}/>
+                <Route path="me" element={<MyAccount />} />
+                <Route path="manage" element={<ManageAccount />} />
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+                <Route path="*" element={<Login />} />
               </Route>
-              <Route path="/shop" element={<Shop />}/>
+
+              <Route path="/shop" element={<Shop />} />
               <Route path="/category">
-                <Route path=":id" element={<CategoryView />}/>
+                <Route path=":id" element={<CategoryView />} />
               </Route>
+
               <Route path="/item">
-                <Route path="/item/men">
+                <Route path="/item/">
+                  <Route path=":id" element={<ItemView />} />
+                </Route>
+
+                {/* <Route path="/item/men">
                   <Route path=":id" element={<ItemView />}/>
                 </Route>
                 <Route path="/item/women">
@@ -55,7 +61,7 @@ function App() {
                 </Route>
                 <Route path="/item/featured">
                   <Route path=":id" element={<ItemView />}/>
-                </Route>
+                </Route> */}
               </Route>
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/search/*" element={<SearchView />} />
@@ -67,7 +73,7 @@ function App() {
           </Router>
         </SearchProvider>
       </WishItemsProvider>
-   </CartItemsProvider>
+    </CartItemsProvider>
   );
 }
 

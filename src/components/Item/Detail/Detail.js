@@ -15,7 +15,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const Detail = (props) => {
     const [quantity, setQuantity] = useState(1);
-    const [size, setSize] = useState(props.item.size[0]);
+    // const [size, setSize] = useState(props.item.size[0]);
+    const [size, setSize] = useState(100);
 
     const cartItems = useContext(CartItemsContext)
     const wishItems = useContext(WishItemsContext)
@@ -67,7 +68,7 @@ const Detail = (props) => {
                         </IconButton>
                     </div>
                         
-                    <div className="product size">
+                    {/* <div className="product size">
                         <Box sx={{ minWidth: 100} }>
                             <FormControl fullWidth size="small">
                                 <InputLabel>Size</InputLabel>
@@ -80,7 +81,7 @@ const Detail = (props) => {
                                 </Select>
                             </FormControl>
                         </Box>
-                    </div>
+                    </div> */}
                 </div>  
                 <div className="collect__item__actions">
                     <div className="add__cart__add__wish">

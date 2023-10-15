@@ -25,3 +25,12 @@
     height: auto;
     width: 100%;
 }
+
+.show__more__action {
+    width: 100%;
+    height: 200px;
+    bottom: 0%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
