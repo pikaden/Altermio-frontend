@@ -16,34 +16,24 @@ a:hover {
     align-items: center;
 }
 
-.nav__bottom__container a:hover {
-    color: rgb(113, 113, 113);
-}
-
-.nav__bottom__container {
-    height: 50px;
-    background-color: rgb(255, 255, 255);
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    z-index: 100;
-}
-
 .bottom__container {
     margin: auto;
-    display: flex;
+    display: none;
     align-items: center;
     flex-direction: row
 }
 
-.container .nav-link {
-    color: black;
-}
-
-.control__small {
+.form__container {
     width: 50%;
+    min-height: 10px;
     height: auto;
-    display: none;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    align-self: center;
+    padding-bottom: 10px;
 }
 
 @media screen and (max-width: 780px) {

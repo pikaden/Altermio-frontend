@@ -13,23 +13,13 @@
     margin: auto;
 }
 
-.form__container {
-    width: 50%;
-    min-height: 10px;
-    height: auto;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    align-self: center;
-}
 
 .control__bar {
     align-self: center;
     height: auto;
     width: auto;
     z-index: 1000;
+    padding-left: 20%;
 }
 
 .drawer {
@@ -40,12 +30,25 @@
     align-items: center;
 }
 
+.bottom__container {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding-left: 40px;
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 @media screen and (max-width: 500px) {
     .nav__top__container {
         height: auto;
-    }
-    .form__container {
-        display: none;
     }
     .top__container {
         justify-content: space-between;
