@@ -15,20 +15,45 @@ const Footer = () => {
                 <div className="footer__items__container">
                     <div className="footer__help__container">
                         <div className="footer__help__header">
-                            <h1>Help</h1>
+                            <h1>Page</h1>
                         </div>
                         <ul className="fotter__help__links">
                             <li className="help__link">
-                                <a href="/"> Shipping</a>
+                                <a href="/"> Home</a>
                             </li>
                             <li className="help__link">
-                                <a href="/">Refund</a>
+                                <a href="/">Shop</a>
                             </li>
                             <li className="help__link">
-                                <a href="/">FAQ</a>
+                                <a href="/">What's new</a>
                             </li>
                             <li className="help__link">
-                                <a href="/">Accessiblity</a>
+                                <a href="/">Contact</a>
+                            </li>
+                            <li className="help__link">
+                                <a href="/">About us</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="footer__help__container">
+                        <div className="footer__help__header">
+                            <h1>Categories</h1>
+                        </div>
+                        <ul className="fotter__help__links">
+                            <li className="help__link">
+                                <a href="/">Category 1</a>
+                            </li>
+                            <li className="help__link">
+                                <a href="/">Category 2</a>
+                            </li>
+                            <li className="help__link">
+                                <a href="/">Category 3</a>
+                            </li>
+                            <li className="help__link">
+                                <a href="/">Category 4</a>
+                            </li>
+                            <li className="help__link">
+                                <a href="/">Category 5</a>
                             </li>
                         </ul>
                     </div>
@@ -41,10 +66,10 @@ const Footer = () => {
                                 <LocalPhoneIcon /> <span>+123 4567 890</span>
                             </li>
                             <li className="footer__contact">
-                                <EmailIcon /> <span>melodydev0521@gmail.com</span>
+                                <EmailIcon /> <span>altermio@gmail.com</span>
                             </li>
                             <li className="footer__contact">
-                                <LocationOnIcon /> <span>Singapore</span>
+                                <LocationOnIcon /> <span>Viet Nam</span>
                             </li>
                         </ul>
                     </div>
