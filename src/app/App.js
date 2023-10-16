@@ -4,8 +4,6 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from '../routes/Home';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
 import ManageAccount from '../components/Account/ManageAccount/ManageAccount';
 import MyAccount from '../components/Account/MyAccount/MyAccount';
 import Shop from '../components/Shop/Shop';
@@ -20,7 +18,13 @@ import WishItemsProvider from '../Context/WishItemsProvider';
 import DrawerNav from '../components/Nav/DrawerNav/DrawerNav';
 import Checkout from '../components/Checkout/Checkout';
 import SearchProvider from '../Context/SearchProvider';
-import AdminPage from '../components/Admin/AdminPage';
+import AdminPage from '../components/Roles/Admin/AdminPage';
+import UserLayout from '../components/layouts/UserLayout';
+import AdminLayout from '../components/layouts/AdminLayout';
+import ModeratorLayout from '../components/layouts/ModeratorLayout';
+import CourierLayout from '../components/layouts/CourierLayout';
+import ModeratorPage from '../components/Roles/Moderator/ModeratorPage';
+import CourierPage from '../components/Roles/Courier/CourierPage';
 
 function App() {
 
@@ -29,47 +33,61 @@ function App() {
       <WishItemsProvider>
         <SearchProvider>
           <Router >
-            <Header />
             <Routes>
-              <Route index element={<Home />} />
-              <Route path="/account">
-                <Route path="me" element={<MyAccount />} />
-                <Route path="manage" element={<ManageAccount />} />
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
-                <Route path="*" element={<Login />} />
+              <Route element={<AdminLayout />}>
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path='*' element={<AdminPage />} />
               </Route>
 
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/category">
-                <Route path=":id" element={<CategoryView />} />
+              <Route element={<ModeratorLayout />}>
+                <Route path="/moderator" element={<ModeratorPage />} />
+                <Route path='/*' element={<ModeratorPage />} />
               </Route>
 
-              <Route path="/item">
-                <Route path="/item/">
-                  <Route path=":id" element={<ItemView />} />
+              <Route element={<UserLayout />}>
+                <Route index element={<Home />} />
+                <Route path="/account">
+                  <Route path="me" element={<MyAccount />} />
+                  <Route path="manage" element={<ManageAccount />} />
+                  <Route path="login" element={<Login />} />
+                  <Route path="register" element={<Register />} />
+                  <Route path="*" element={<Login />} />
                 </Route>
 
-                {/* <Route path="/item/men">
-                  <Route path=":id" element={<ItemView />}/>
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/category">
+                  <Route path=":id" element={<CategoryView />} />
                 </Route>
-                <Route path="/item/women">
-                  <Route path=":id" element={<ItemView />}/>
+
+                <Route path="/item">
+                  <Route path="/item/">
+                    <Route path=":id" element={<ItemView />} />
+                  </Route>
+
+                  <Route path="/item/men">
+                    <Route path=":id" element={<ItemView />} />
+                  </Route>
+                  <Route path="/item/women">
+                    <Route path=":id" element={<ItemView />} />
+                  </Route>
+                  <Route path="/item/kids">
+                    <Route path=":id" element={<ItemView />} />
+                  </Route>
+                  <Route path="/item/featured">
+                    <Route path=":id" element={<ItemView />} />
+                  </Route>
+
                 </Route>
-                <Route path="/item/kids">
-                  <Route path=":id" element={<ItemView />}/>
-                </Route>
-                <Route path="/item/featured">
-                  <Route path=":id" element={<ItemView />}/>
-                </Route> */}
+
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/search/*" element={<SearchView />} />
               </Route>
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/search/*" element={<SearchView />} />
-            </Routes>          
-            <Routes>
-            <Route path="/admin" element={<AdminPage />} />
+              
+              <Route element={<CourierLayout />}>
+                <Route path="/courier" element={<CourierPage />} />
+                <Route path='/*' element={<CourierPage />} />
+              </Route>
             </Routes>
-            {/* <Footer /> */}
           </Router>
         </SearchProvider>
       </WishItemsProvider>

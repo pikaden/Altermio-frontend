@@ -13,35 +13,50 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
+import { useAtom } from 'jotai';
+import userAtom from '../Atom/userAtom';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function Login() {
+    const navigate = useNavigate();
+    const [user, setUser] = useAtom(userAtom);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-            // remember: data.get('remember'),
-        });
-
+        
         await axios.post(`http://localhost:3000/v1/auth/login/`, {
             email: data.get('email'),
             password: data.get('password'),
         })
             .then(res => {
                 console.log(res);
-                console.log(res.data);
-
                 const accessToken = res.data.tokens.access;
                 const refreshToken = res.data.tokens.refresh;
+                const userRole = res.data.user.role;
 
                 localStorage.setItem("accessToken", accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
+                localStorage.setItem('user', JSON.stringify(res.data.user));
+                
+                setUser(res.data.user);
+
+                if (userRole === 'admin') {
+                    navigate('/admin');
+                } else if (userRole === 'moderator') {
+                    navigate('/moderator');
+                } else if (userRole === 'user') {
+                    navigate('/')
+                } else if (userRole === 'courier') {
+                    navigate('/courier');
+                } else navigate('/')
+            })
+            .catch(err => {
+                alert('Login failed');
             })
     };
 
