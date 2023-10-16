@@ -3,11 +3,28 @@ import { Box, Button, TableCell, TableContainer, Table, TableHead, TableRow, Tab
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Modal from "react-bootstrap/Modal";
 import "./ManageAccount.css";
+import axios from "axios";
+import { useEffect } from "react";
 
 
 const ManageAccount = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const localHost = "localhost:3000/v1/users";
+  const [users, setUsers] = useState([]);
+  let accessToken = localStorage.getItem("accessToken");
+
+
+  const getUsers = async () => {
+   await axios.get('http://localhost:3000/v1/users', {headers: {"Authorization" : `Bearer ${accessToken}`} }).then((response) => {
+      
+      console.log(response);
+      setUsers(response.data.results);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  };
 
   const isModalOpen = () => {
     setModalIsOpen(false);
@@ -27,36 +44,9 @@ const ManageAccount = () => {
     console.log("Update Account");
   };
 
-  const users = [
-    {
-      id: 1,
-      name: "John Doe",
-      phone: "555-555-5555",
-      role: "Admin",
-      verified: true,
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      phone: "555-555-5555",
-      role: "User",
-      verified: false,
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      phone: "555-555-5555",
-      role: "Shopper",
-      verified: true,
-    },
-    {
-      id: 4,
-      name: "Alice Williams",
-      phone: "555-555-5555",
-      role: "User",
-      verified: false,
-    },
-  ];
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   return (
     <Box height={100}>
@@ -65,7 +55,6 @@ const ManageAccount = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>User ID</TableCell>
               <TableCell>Customer Name</TableCell>
               <TableCell>Phone Number</TableCell>
               <TableCell>Role</TableCell>
@@ -76,9 +65,8 @@ const ManageAccount = () => {
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.phone}</TableCell>
+                <TableCell>{user.firstName}</TableCell>
+                <TableCell>{user.phoneNumber}</TableCell>
                 <TableCell>{user.role}</TableCell>
                 <TableCell>
                   <div
@@ -103,17 +91,6 @@ const ManageAccount = () => {
                     </Modal.Header>
                     <Modal.Body>
                         <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="frontHTML">
-                                User ID
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="frontHTML"
-                                value={selectedUser?.id}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
                             <label className="col-md-4" htmlFor="backHTML">
                                 Customer Name
                             </label>
@@ -121,7 +98,11 @@ const ManageAccount = () => {
                                 className="col-md-8 textArea"
                                 type="text"
                                 id="backHTML"
-                                value={selectedUser?.name}
+                                value={selectedUser?.firstName}
+                                onChange={(e) => {
+                                    setSelectedUser({ ...selectedUser, firstName: e.target.value });
+                                }}
+                                
                             />
                         </div>
                         <div className="row" style={{ marginBottom: '1rem' }}>
@@ -132,7 +113,10 @@ const ManageAccount = () => {
                                 className="col-md-8 textArea"
                                 type="text"
                                 id="backHTML"
-                                value={selectedUser?.phone}
+                                value={selectedUser?.phoneNumber}
+                                onChange={(e) => {
+                                    setSelectedUser({ ...selectedUser, phoneNumber: e.target.value });
+                                }}
                             />
                         </div>
                         <div className="row" style={{ marginBottom: '1rem' }}>
@@ -144,6 +128,9 @@ const ManageAccount = () => {
                                 type="text"
                                 id="backHTML"
                                 value={selectedUser?.role}
+                                onChange={(e) => {
+                                    setSelectedUser({ ...selectedUser, role: e.target.value });
+                                }}
                             />
                         </div>
                         <div className="row" style={{ marginBottom: '1rem' }}>
@@ -154,7 +141,10 @@ const ManageAccount = () => {
                                 className="col-md-8 textArea"
                                 type="text"
                                 id="backHTML"
-                                value={selectedUser?.verified ? "Verified" : "Not Verified"}
+                                defaultValue={selectedUser?.verified ? "Verified" : "Not Verified"}
+                                onChange={(e) => {
+                                    setSelectedUser({ ...selectedUser, verified: e.target.value });
+                                }}
                             />
                         </div>
                     </Modal.Body>
