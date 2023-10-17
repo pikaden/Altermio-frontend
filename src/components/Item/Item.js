@@ -21,7 +21,7 @@ const Item = (props) => {
             </div>
             <div className="show__more__action">
                 {/* TODO: change link to category of product, show all products in that category, pagination */}
-                <Link to={`/shop`}>
+                <Link to={`/category/${props.item.category}`}>
                     <Button variant='outlined' sx={[{ width: '200px', height: '50px', borderRadius: '20px', fontWeight: '700', backgroundColor: '#FFE26E', borderColor: '#FFE26E', color: 'black' }, { '&:hover': { borderColor: '#FFE26E', backgroundColor: "none" } }]}>Show more</Button>
                 </Link>
             </div>
