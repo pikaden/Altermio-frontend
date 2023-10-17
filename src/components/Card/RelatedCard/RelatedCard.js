@@ -16,7 +16,7 @@ const RelatedCard = (props) => {
     useEffect(() => {
         const fetchProduct = async () => {
             // get product by id
-            await axios.get(`http://localhost:3000/v1/products/${props.item}`)
+            await axios.get(`http://localhost:3000/v1/products/${props.item.id}`)
                 .then(res => {
                     const product = res.data;
                     setItem(product);

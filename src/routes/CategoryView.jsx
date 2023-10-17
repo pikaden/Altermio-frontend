@@ -1,37 +1,46 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 import ReactLoading from 'react-loading';
 import Category from '../components/Category/Category';
 
 const CategoryView = () => {
     const param = useParams()
-    const [ menItems, setMenItems ] = useState()
-    const [ womenItems, setWomenItems ] = useState()
-    const [ kidsItems, setKidsItems ] = useState()
-    const [ loading , setLoading ] = useState(true) 
+    const [items, setItems] = useState()
+    const [loading, setLoading] = useState(true)
+    const [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
-        axios.get("https://shema-backend.vercel.app/api/items")
-            .then(res => {
-                setMenItems(res.data.filter((item) => item.category === "men"))
-                setKidsItems(res.data.filter((item) => item.category === "kids" ))
-                setWomenItems(res.data.filter((item) => item.category === "women")) 
-                setLoading(false)
-            })
-            .catch(err => console.log(err))
+        const fetchProductsByProductListId = async () => {
+            const page = searchParams.get('page');
+            const limit = searchParams.get('limit');
+            const sortBy = searchParams.get('sortBy');
 
+            // get products by product list id
+            await axios.get(`http://localhost:3000/v1/productLists/manage/${param.id}`, {
+                params: {
+                    page: page,
+                    limit: limit,
+                    sortBy: sortBy
+                }
+            })
+                .then(res => {
+                    const items = res.data;
+                    setItems(items);
+                    setLoading(false);
+                })
+                .catch(err => console.log(err))
+        }
+        fetchProductsByProductListId();
         window.scrollTo(0, 0)
-    }, [param.id])
-    
-    return ( 
+    }, [param.id, searchParams])
+
+    return (
         <div className='d-flex min-vh-100 w-100 justify-content-center align-items-center m-auto'>
-            {loading && <ReactLoading type="balls" color='#FFE26E' height={100} width={100} className='m-auto'/>}
-            { menItems && param.id === 'men' && <Category name="Men's Fashion" items={menItems} category="men"/>}
-            { womenItems && param.id === 'kids' && <Category name="Kids Fashion" items={kidsItems} category="kids"/>}
-            { kidsItems && param.id === 'women' && <Category name="Women's Fashion" items={womenItems} category="women"/>}
+            {loading && <ReactLoading type="balls" color='#FFE26E' height={100} width={100} className='m-auto' />}
+            {!loading && <Category defaultPage={searchParams.get('page')} name={items.results.categoryName} items={items} category={items.results.categoryName} />}
         </div>
-     );
+    );
 }
- 
+
 export default CategoryView;

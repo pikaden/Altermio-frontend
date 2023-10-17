@@ -5,15 +5,14 @@ import './Related.css';
 
 const Related = (props) => {
     const [products, setProducts] = useState();
-
     
     useEffect(() => {
         const fetchProductListByName = async () => {
-            await axios.get(`http://localhost:3000/v1/productLists/productListName/${props.item.category}`)
+            await axios.get(`http://localhost:3000/v1/productLists/manage/${props.item.category}`)
                 .then(res => {
-                    const products = res.data.products;
+                    const products = res.data.results.products;
                     // remove item displayed in products, by id
-                    products.filter(item => item !== props.item.id);
+                    // products.filter(item => item !== props.item.id);
     
                     setProducts(products);
                 })
