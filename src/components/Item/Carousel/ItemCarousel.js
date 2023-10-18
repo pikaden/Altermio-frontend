@@ -1,6 +1,9 @@
 import Carousel from 'react-bootstrap/Carousel';
 import './ItemCarousel.css';
 import ProductCarouselImage from './Images/ItemCarouselImage';
+import {
+  Magnifier
+} from "@vanyapr/react-image-magnifiers";
 
 const ProductCarousel = (props) => {
   // TODO: change default image url
@@ -13,13 +16,17 @@ const ProductCarousel = (props) => {
           <Carousel variant="dark" interval={4000}>
             <Carousel.Item>
               <div className="carousel__image__container">
-                <img className="carousel__image" src={defaultImageUrl} alt="item" />
+                <Magnifier
+                  className="carousel_image"
+                  imageSrc={defaultImageUrl}
+                  alt="item"
+                />
               </div>
             </Carousel.Item>
           </Carousel>
         }
         {props.item.images.length !== 0 &&
-          <Carousel variant="dark" interval={4000}>
+          <Carousel variant="dark" interval={4000} pause={'hover'}>
             {props.item.images.map(imageId => (
               <Carousel.Item>
                 <ProductCarouselImage image={imageId} />
