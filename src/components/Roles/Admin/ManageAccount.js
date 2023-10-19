@@ -1,13 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, TableCell, TableContainer, Table, TableHead, TableRow, TableBody } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Modal from "react-bootstrap/Modal";
+import axios from "axios";
+import ReactPaginate from "react-paginate";
 import "./ManageAccount.css";
-
+import "./PaginateStyle.css"
 
 const ManageAccount = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const localHost = "localhost:3000/v1/users";
+  const [users, setUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const usersPerPage = 8;
+  const pageCount = Math.ceil(users.length / usersPerPage);
+  let accessToken = localStorage.getItem("accessToken");
+
+  const getUsers = async () => {
+    await axios.get(`http://localhost:3000/v1/users`, { headers: { "Authorization": `Bearer ${accessToken}` } })
+      .then((response) => {
+        console.log(response);
+        setUsers(response.data.results);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const isModalOpen = () => {
     setModalIsOpen(false);
@@ -27,36 +46,17 @@ const ManageAccount = () => {
     console.log("Update Account");
   };
 
-  const users = [
-    {
-      id: 1,
-      name: "John Doe",
-      phone: "555-555-5555",
-      role: "Admin",
-      verified: true,
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      phone: "555-555-5555",
-      role: "User",
-      verified: false,
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      phone: "555-555-5555",
-      role: "Shopper",
-      verified: true,
-    },
-    {
-      id: 4,
-      name: "Alice Williams",
-      phone: "555-555-5555",
-      role: "User",
-      verified: false,
-    },
-  ];
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const offset = currentPage * usersPerPage;
+  const currentPageUsers = users.slice(offset, offset + usersPerPage);
+
+  const handlePageClick = (data) => {
+    const selectedPage = data.selected;
+    setCurrentPage(selectedPage);
+  };
 
   return (
     <Box height={100}>
@@ -65,7 +65,6 @@ const ManageAccount = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>User ID</TableCell>
               <TableCell>Customer Name</TableCell>
               <TableCell>Phone Number</TableCell>
               <TableCell>Role</TableCell>
@@ -74,11 +73,10 @@ const ManageAccount = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
+            {currentPageUsers.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.phone}</TableCell>
+                <TableCell>{user.firstName}</TableCell>
+                <TableCell>{user.phoneNumber}</TableCell>
                 <TableCell>{user.role}</TableCell>
                 <TableCell>
                   <div
@@ -97,76 +95,35 @@ const ManageAccount = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <ReactPaginate
+      previousLabel={"Previous"}
+      nextLabel={"Next"}
+      breakLabel={"..."}
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={5}
+      onPageChange={handlePageClick}
+      containerClassName={"pagination"}  // Added a container class
+      subContainerClassName={"pagination li"}
+      activeClassName={"active"}
+      />
+
       <Modal show={modalIsOpen} onHide={handleCloseModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Update Flash Card</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="frontHTML">
-                                User ID
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="frontHTML"
-                                value={selectedUser?.id}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Customer Name
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedUser?.name}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Phone Number
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedUser?.phone}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Role
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedUser?.role}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Email Verification
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedUser?.verified ? "Verified" : "Not Verified"}
-                            />
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="success" onClick={handleUpdateAccount}>
-                            Update
-                        </Button>
-                        <Button variant="danger" onClick={handleCloseModal}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+        <Modal.Header closeButton>
+          <Modal.Title>Update Flash Card</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* Your modal content */}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleUpdateAccount}>
+            Update
+          </Button>
+          <Button variant="danger" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Box>
   );
 };
