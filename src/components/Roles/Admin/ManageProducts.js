@@ -4,11 +4,16 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import { useEffect } from "react";
+import ReactPaginate from "react-paginate";
+import "./PaginateStyle.css"
 
 function ManageProducts() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedproduct, setSelectedproduct] = useState(null);
   const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const productsPerPage = 8;
+  const pageCount = Math.ceil(products.length / productsPerPage);
   let accessToken = localStorage.getItem("accessToken");
 
 
@@ -41,6 +46,14 @@ function ManageProducts() {
     console.log("Update Account");
   };
 
+  const offset = currentPage * productsPerPage;
+  const currentPageProducts = products.slice(offset, offset + productsPerPage);
+
+  const handlePageClick = (data) => {
+    const selectedPage = data.selected;
+    setCurrentPage(selectedPage);
+  };
+
   useEffect(() => {
     getproducts();
   }, []);
@@ -63,7 +76,7 @@ function ManageProducts() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.map((product) => (
+            {currentPageProducts.map((product) => (
               <TableRow key={product.id}>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.category}</TableCell>
@@ -94,6 +107,18 @@ function ManageProducts() {
           </TableBody>
         </Table>
       </TableContainer>
+      <ReactPaginate
+      previousLabel={"Previous"}
+      nextLabel={"Next"}
+      breakLabel={"..."}
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={5}
+      onPageChange={handlePageClick}
+      containerClassName={"pagination"}  // Added a container class
+      subContainerClassName={"pagination li"}
+      activeClassName={"active"}
+      />
       <Modal show={modalIsOpen} onHide={handleCloseModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Update Flash Card</Modal.Title>
