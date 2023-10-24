@@ -18,14 +18,14 @@ function ManageProducts() {
 
 
   const getproducts = async () => {
-   await axios.get('http://localhost:3000/v1/products', {headers: {"Authorization" : `Bearer ${accessToken}`} }).then((response) => {
-      
+    await axios.get('http://localhost:3000/v1/products', { headers: { "Authorization": `Bearer ${accessToken}` } }).then((response) => {
+
       console.log(response);
       setProducts(response.data.results);
     })
-    .catch((error) => {
-      console.log(error);
-    });
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const isModalOpen = () => {
@@ -84,7 +84,7 @@ function ManageProducts() {
                 <TableCell>{product.state}</TableCell>
                 <TableCell>{product.brand}</TableCell>
                 <TableCell>
-                <div
+                  <div
                     className={`verification-badge ${product.activate ? "Approved" : "Deny"}`}
                   >
                     {product.activate ? "Approved" : "Deny"}
@@ -108,103 +108,103 @@ function ManageProducts() {
         </Table>
       </TableContainer>
       <ReactPaginate
-      previousLabel={"Previous"}
-      nextLabel={"Next"}
-      breakLabel={"..."}
-      pageCount={pageCount}
-      marginPagesDisplayed={2}
-      pageRangeDisplayed={5}
-      onPageChange={handlePageClick}
-      containerClassName={"pagination"}  // Added a container class
-      subContainerClassName={"pagination li"}
-      activeClassName={"active"}
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
+        breakLabel={"..."}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}  // Added a container class
+        subContainerClassName={"pagination li"}
+        activeClassName={"active"}
       />
       <Modal show={modalIsOpen} onHide={handleCloseModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Update Flash Card</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Product Name
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedproduct?.name}
-                                onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, name: e.target.value });
-                                }}
-                                
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Category
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedproduct?.category}
-                                onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, category: e.target.value });
-                                }}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Description
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedproduct?.description}
-                                onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, description: e.target.value });
-                                }}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Verification
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                defaultValue={selectedproduct?.state ? "Verified" : "Not-verified"}
-                                onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, state: e.target.value });
-                                }}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Brand
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedproduct?.brand}
-                                onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, brand: e.target.value });
-                                }}
-                            />
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="success" onClick={handleUpdateAccount}>
-                            Update
-                        </Button>
-                        <Button variant="danger" onClick={handleCloseModal}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+        <Modal.Header closeButton>
+          <Modal.Title>Update Flash Card</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <label className="col-md-4" htmlFor="backHTML">
+              Product Name
+            </label>
+            <input
+              className="col-md-8 textArea"
+              type="text"
+              id="backHTML"
+              value={selectedproduct?.name}
+              onChange={(e) => {
+                setSelectedproduct({ ...selectedproduct, name: e.target.value });
+              }}
+
+            />
+          </div>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <label className="col-md-4" htmlFor="backHTML">
+              Category
+            </label>
+            <input
+              className="col-md-8 textArea"
+              type="text"
+              id="backHTML"
+              value={selectedproduct?.category}
+              onChange={(e) => {
+                setSelectedproduct({ ...selectedproduct, category: e.target.value });
+              }}
+            />
+          </div>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <label className="col-md-4" htmlFor="backHTML">
+              Description
+            </label>
+            <input
+              className="col-md-8 textArea"
+              type="text"
+              id="backHTML"
+              value={selectedproduct?.description}
+              onChange={(e) => {
+                setSelectedproduct({ ...selectedproduct, description: e.target.value });
+              }}
+            />
+          </div>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <label className="col-md-4" htmlFor="backHTML">
+              Verification
+            </label>
+            <input
+              className="col-md-8 textArea"
+              type="text"
+              id="backHTML"
+              defaultValue={selectedproduct?.state ? "Verified" : "Not-verified"}
+              onChange={(e) => {
+                setSelectedproduct({ ...selectedproduct, state: e.target.value });
+              }}
+            />
+          </div>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <label className="col-md-4" htmlFor="backHTML">
+              Brand
+            </label>
+            <input
+              className="col-md-8 textArea"
+              type="text"
+              id="backHTML"
+              value={selectedproduct?.brand}
+              onChange={(e) => {
+                setSelectedproduct({ ...selectedproduct, brand: e.target.value });
+              }}
+            />
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleUpdateAccount}>
+            Update
+          </Button>
+          <Button variant="danger" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Box>
   );
 }
