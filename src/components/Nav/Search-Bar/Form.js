@@ -10,19 +10,19 @@ const Form = () => {
     const searchContext = useContext(SearchContext)
     const navigate = useNavigate()
 
-    const handelChange = (e) => {
+    const handleChange = (e) => {
         setSearchInput(e.target.value)
     }
 
-    const handelFormSubmit = (e) => {  
+    const handleFormSubmit = (e) => {  
         e.preventDefault()
-        searchContext.setSearchQuery(searchInput)
+        searchContext.setSearchKeyword(searchInput)
         navigate('/search')
     }
 
     return ( 
-            <form className="search__form" onSubmit={handelFormSubmit}>
-                <input type="text"  placeholder='Search for products' className="search__form__input" value={searchInput} onChange={handelChange} required/>
+            <form className="search__form" onSubmit={handleFormSubmit}>
+                <input type="text"  placeholder='Search for products' className="search__form__input" value={searchInput} onChange={handleChange} required/>
                 <button className="search__form__button" type='submit'>
                     <SearchIcon fontSize='medium'/>
                 </button>

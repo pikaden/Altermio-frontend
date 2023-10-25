@@ -2,16 +2,17 @@ import { useState } from "react";
 import { SearchContext } from "./SearchContext";
 
 const SearchProvider = (props) => {
-    const [ query, setQuery ] = useState()
+    const [ keyword, setKeyword ] = useState()
 
-    const setSearchQuery = (queryParam) => {
-        setQuery(queryParam)
+    const setSearchKeyword = (keywordParam) => {
+        setKeyword(keywordParam)
     }
 
     const searchCtx = {
-        searchQuery: query,
-        setSearchQuery: setSearchQuery
+        searchKeyword: keyword,
+        setSearchKeyword: setSearchKeyword
     }
+    
     return ( 
         <SearchContext.Provider value={searchCtx}>
             {props.children}
