@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
 export const SearchContext = createContext({
-    searchKeyword: '',
+    searchKeyword: localStorage.getItem('searchKeyword'),
     setSearchKeyword: () => {}
 })

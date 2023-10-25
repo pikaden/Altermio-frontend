@@ -17,6 +17,7 @@ const Form = () => {
     const handleFormSubmit = (e) => {  
         e.preventDefault()
         searchContext.setSearchKeyword(searchInput)
+        localStorage.setItem('searchKeyword', searchInput)
         navigate('/search')
     }
 
