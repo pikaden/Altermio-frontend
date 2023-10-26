@@ -29,69 +29,63 @@ import CourierPage from '../components/Roles/Courier/CourierPage';
 function App() {
 
   return (
-    <CartItemsProvider>
-      <WishItemsProvider>
-        <SearchProvider>
-          <Router >
-            <Routes>
-              <Route element={<AdminLayout />}>
-                <Route path="/admin" element={<AdminPage />} />
-                <Route path='*' element={<AdminPage />} />
-              </Route>
+    <Router >
+      <Routes>
+        <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path='*' element={<AdminPage />} />
+        </Route>
 
-              <Route element={<ModeratorLayout />}>
-                <Route path="/moderator" element={<ModeratorPage />} />
-                <Route path='/*' element={<ModeratorPage />} />
-              </Route>
+        <Route element={<ModeratorLayout />}>
+          <Route path="/moderator" element={<ModeratorPage />} />
+          <Route path='/*' element={<ModeratorPage />} />
+        </Route>
 
-              <Route element={<UserLayout />}>
-                <Route index element={<Home />} />
-                <Route path="/account">
-                  <Route path="me" element={<MyAccount />} />
-                  <Route path="manage" element={<ManageAccount />} />
-                  <Route path="login" element={<Login />} />
-                  <Route path="register" element={<Register />} />
-                  <Route path="*" element={<Login />} />
-                </Route>
+        <Route element={<UserLayout />}>
+          <Route index element={<Home />} />
+          <Route path="/account">
+            <Route path="me" element={<MyAccount />} />
+            <Route path="manage" element={<ManageAccount />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="*" element={<Login />} />
+          </Route>
 
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/category">
-                  <Route path=":id" element={<CategoryView />} />
-                </Route>
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/category">
+            <Route path=":id" element={<CategoryView />} />
+          </Route>
 
-                <Route path="/item">
-                  <Route path="/item/">
-                    <Route path=":id" element={<ItemView />} />
-                  </Route>
+          <Route path="/item">
+            <Route path="/item/">
+              <Route path=":id" element={<ItemView />} />
+            </Route>
 
-                  <Route path="/item/men">
-                    <Route path=":id" element={<ItemView />} />
-                  </Route>
-                  <Route path="/item/women">
-                    <Route path=":id" element={<ItemView />} />
-                  </Route>
-                  <Route path="/item/kids">
-                    <Route path=":id" element={<ItemView />} />
-                  </Route>
-                  <Route path="/item/featured">
-                    <Route path=":id" element={<ItemView />} />
-                  </Route>
+            <Route path="/item/men">
+              <Route path=":id" element={<ItemView />} />
+            </Route>
+            <Route path="/item/women">
+              <Route path=":id" element={<ItemView />} />
+            </Route>
+            <Route path="/item/kids">
+              <Route path=":id" element={<ItemView />} />
+            </Route>
+            <Route path="/item/featured">
+              <Route path=":id" element={<ItemView />} />
+            </Route>
 
-                </Route>
+          </Route>
 
-                <Route path="/wishlist" element={<Wishlist />} />
-                <Route path="/search/*" element={<SearchView />} />
-              </Route>
-              
-              <Route element={<CourierLayout />}>
-                <Route path="/courier" element={<CourierPage />} />
-                <Route path='/*' element={<CourierPage />} />
-              </Route>
-            </Routes>
-          </Router>
-        </SearchProvider>
-      </WishItemsProvider>
-    </CartItemsProvider>
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/search/*" element={<SearchView />} />
+        </Route>
+
+        <Route element={<CourierLayout />}>
+          <Route path="/courier" element={<CourierPage />} />
+          <Route path='/*' element={<CourierPage />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 

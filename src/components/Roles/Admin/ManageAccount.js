@@ -166,16 +166,16 @@ const ManageAccount = () => {
         </Table>
       </TableContainer>
       <ReactPaginate
-      previousLabel={"Previous"}
-      nextLabel={"Next"}
-      breakLabel={"..."}
-      pageCount={pageCount}
-      marginPagesDisplayed={2}
-      pageRangeDisplayed={5}
-      onPageChange={handlePageClick}
-      containerClassName={"pagination"}  // Added a container class
-      subContainerClassName={"pagination li"}
-      activeClassName={"active"}
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
+        breakLabel={"..."}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}  // Added a container class
+        subContainerClassName={"pagination li"}
+        activeClassName={"active"}
       />
 
       <Modal show={modalIsOpen} onHide={handleCloseModal}>

@@ -5,63 +5,41 @@ const CartItemsProvider = (props) => {
 
     const [cartItems, setCartItems] = useState([])
     const [totalAmountOfItems, setTotalAmountOfItems] = useState(0)
-    
-    const addToCartHandler = (item, quantity) => {
-        const { _id, name, price, image, category, size} = item;
+
+    const addToCartHandler = (item) => {
+        const { id, name, price, images, category } = item;
         removeFromCartHandler(item)
-        setCartItems((prevItems) => [...prevItems, {_id, name, price, image, category, itemQuantity: quantity, size}])
+        setCartItems((prevItems) => [...prevItems, { id, name, price, images, category }])
     }
 
     const removeFromCartHandler = (item) => {
-        setCartItems(cartItems.filter((prevItem) => prevItem._id !== item._id))
+        setCartItems(cartItems.filter((prevItem) => prevItem.id !== item.id))
     }
 
     const calculateTotalAmount = (currentCartItems) => {
         let total = 0
         currentCartItems.forEach((item) => {
-            total = total + (item.price * item.itemQuantity)
+            total = total + item.price
         })
-
         setTotalAmountOfItems(total)
-    }
-
-    const quantityHandler = (itemId, action) => {
-        if(action === 'INC'){
-            setCartItems(cartItems.map((item) => {
-                if(item.id  === itemId){
-                    item.itemQuantity += 1
-                }
-                return item
-            }))
-        }
-        else {
-            setCartItems(cartItems.map((item) => {
-                if(item.id  === itemId){
-                    item.itemQuantity -= 1
-                }
-                return item
-            }))
-        }
     }
 
     useEffect(() => {
         calculateTotalAmount(cartItems)
     }, [cartItems])
 
-
     const cartItemCtx = {
         items: cartItems,
         totalAmount: totalAmountOfItems,
         addItem: addToCartHandler,
-        removeItem: removeFromCartHandler,
-        quantity: quantityHandler
+        removeItem: removeFromCartHandler
     }
 
-    return ( 
+    return (
         <CartItemsContext.Provider value={cartItemCtx}>
             {props.children}
         </CartItemsContext.Provider>
-     );
+    );
 }
- 
+
 export default CartItemsProvider;

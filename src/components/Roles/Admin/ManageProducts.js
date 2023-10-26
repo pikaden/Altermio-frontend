@@ -25,9 +25,9 @@ function ManageProducts() {
       console.log(response);
       setProducts(response.data.results);
     })
-    .catch((error) => {
-      console.log(error);
-    });
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
 
@@ -155,16 +155,16 @@ function ManageProducts() {
         </Table>
       </TableContainer>
       <ReactPaginate
-      previousLabel={"Previous"}
-      nextLabel={"Next"}
-      breakLabel={"..."}
-      pageCount={pageCount}
-      marginPagesDisplayed={2}
-      pageRangeDisplayed={5}
-      onPageChange={handlePageClick}
-      containerClassName={"pagination"}  // Added a container class
-      subContainerClassName={"pagination li"}
-      activeClassName={"active"}
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
+        breakLabel={"..."}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}  // Added a container class
+        subContainerClassName={"pagination li"}
+        activeClassName={"active"}
       />
       <Modal show={modalIsOpen} onHide={handleCloseModal}>
                     <Modal.Header closeButton>
