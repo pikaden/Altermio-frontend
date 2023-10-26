@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Box, Button, TableCell, TableContainer, Table, TableHead, TableRow, TableBody } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import DeleteIcon from '@mui/icons-material/Delete';
+import VerifiedIcon from '@mui/icons-material/Verified';
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
-import "./ManageProduct.css";
-import "./PaginateStyle.css"
+import "./ManageVerificationRequest.css";
 
-function ManageProducts() {
+function ManageVerificationRequest() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedproduct, setSelectedproduct] = useState(null);
   const [products, setProducts] = useState([]);
@@ -20,7 +20,7 @@ function ManageProducts() {
 
 
   const getProducts = async () => {
-   await axios.get('http://localhost:3000/v1/products/manageProducts/all?activate=accept', {headers: {"Authorization" : `Bearer ${accessToken}`} }).then((response) => {
+   await axios.get('http://localhost:3000/v1/products/manageProducts/all?verify=deny', {headers: {"Authorization" : `Bearer ${accessToken}`} }).then((response) => {
       
       console.log(response);
       setProducts(response.data.results);
@@ -51,11 +51,13 @@ function ManageProducts() {
   //       console.log(error);
   //     });
 
-  //     setModalIsOpen(false);
+  //     setModalIsOpen(false);handleVerifyProduct
   // };
 
-  const handleDeleteProduct = async () => {
-    await axios.delete(`http://localhost:3000/v1/products/${selectedproduct.id}`,{ headers: { "Authorization": `Bearer ${accessToken}`, access_token : accessToken } })
+  const handleVerifyProduct = async () => {
+    await axios.put(`http://localhost:3000/v1/products/manageVerifyProducts/${selectedproduct.id}/accept`,{
+      type: "accept"
+    },{ headers: { "Authorization": `Bearer ${accessToken}`} })
       .then((response) => {
         console.log(response);
         getProducts();
@@ -121,9 +123,7 @@ function ManageProducts() {
           </TableHead>
           <TableBody>
             {currentPageProducts.map((product) => (
-              <TableRow key={product.id}
-                        hover
-              >
+              <TableRow key={product.id}>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.category}</TableCell>
                 <TableCell>{product.price}</TableCell>
@@ -139,14 +139,14 @@ function ManageProducts() {
                 </TableCell>
                 <TableCell>
                   <div
-                    className={`verification-badge ${product.verify === 'deny' ? "not-verified" : "verified"}`}
+                    className={`verification-badge ${product.verify === 'accept' ? "verified" : "not-verified"}`}
                   >
-                    {product.verify ? "Not Verified" : "Verified"}
+                    {product.verify === 'accept' ? "Verified" : "Not Verified"}
                   </div>
                 </TableCell>
                 <TableCell>
                   <Button onClick={() => handleOpen(product)}>
-                    <DeleteIcon />
+                    <VerifiedIcon />
                   </Button>
                 </TableCell>
               </TableRow>
@@ -236,9 +236,9 @@ function ManageProducts() {
                                 className="col-md-8 textArea"
                                 type="text"
                                 id="backHTML"
-                                defaultValue={selectedproduct?.state ? "Verified" : "Not-verified"}
+                                defaultValue={selectedproduct?.verify ? "Verified" : "Not-verified"}
                                 onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, state: e.target.value });
+                                    setSelectedproduct({ ...selectedproduct, verify: e.target.value });
                                 }}
                             />
                         </div>
@@ -258,8 +258,8 @@ function ManageProducts() {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="success" onClick={handleDeleteProduct}>
-                            Delete
+                        <Button variant="success" onClick={handleVerifyProduct}>
+                            Verify
                         </Button>
                         <Button variant="danger" onClick={handleCloseModal}>
                             Close
@@ -270,4 +270,4 @@ function ManageProducts() {
   );
 }
 
-export default ManageProducts;
+export default ManageVerificationRequest;
