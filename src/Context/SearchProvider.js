@@ -9,7 +9,7 @@ const SearchProvider = (props) => {
     }
 
     const searchCtx = {
-        searchKeyword: keyword,
+        searchKeyword: keyword ? keyword : localStorage.getItem('searchKeyword'),
         setSearchKeyword: setSearchKeyword
     }
     
