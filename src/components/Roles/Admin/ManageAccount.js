@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, TableCell, TableContainer, Table, TableHead, TableRow, TableBody } from "@mui/material";
+import { Box, Button, TableCell, TableContainer, Table, TableHead, TableRow, TableBody, Pagination } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
-import ReactPaginate from "react-paginate";
 import "./ManageAccount.css";
 import "./PaginateStyle.css"
 
@@ -12,9 +11,10 @@ const ManageAccount = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const localHost = "localhost:3000/v1/users";
   const [users, setUsers] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const usersPerPage = 8;
-  const pageCount = Math.ceil(users.length / usersPerPage);
+
   let accessToken = localStorage.getItem("accessToken");
   // Validation functions for each field
   const isNameValid = (name) => /^[A-Za-z\s]+$/.test(name);
@@ -24,10 +24,11 @@ const ManageAccount = () => {
   const [validationErrors, setValidationErrors] = useState({});
 
   const getUsers = async () => {
-    await axios.get(`http://localhost:3000/v1/users`, { headers: { "Authorization": `Bearer ${accessToken}` } })
+    await axios.get(`http://localhost:3000/v1/users?page=${page}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
       .then((response) => {
         console.log(response);
         setUsers(response.data.results);
+        setTotalPages(response.data.totalPages);
       })
       .catch((error) => {
         console.log(error);
@@ -105,17 +106,15 @@ const ManageAccount = () => {
     setModalIsOpen(false);
   };
 
-  const offset = currentPage * usersPerPage;
-  const currentPageUsers = users.slice(offset, offset + usersPerPage);
 
-  const handlePageClick = (data) => {
-    const selectedPage = data.selected;
-    setCurrentPage(selectedPage);
+  const handlePageChange = (event, value) => {
+      setPage(value); 
+      console.log(page);    
   };
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [page]);
   return (
     <Box height={100}>
       <TableContainer
@@ -139,7 +138,7 @@ const ManageAccount = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentPageUsers.map((user) => (
+            {users.map((user) => (
               <TableRow 
               hover
               key={user.id}
@@ -165,18 +164,15 @@ const ManageAccount = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <ReactPaginate
-      previousLabel={"Previous"}
-      nextLabel={"Next"}
-      breakLabel={"..."}
-      pageCount={pageCount}
-      marginPagesDisplayed={2}
-      pageRangeDisplayed={5}
-      onPageChange={handlePageClick}
-      containerClassName={"pagination"}  // Added a container class
-      subContainerClassName={"pagination li"}
-      activeClassName={"active"}
-      />
+      <Pagination
+        count={totalPages}
+        page={page}
+        size='large'
+        onChange={handlePageChange}
+        showFirstButton
+        showLastButton
+        className="pagination"
+        />
 
       <Modal show={modalIsOpen} onHide={handleCloseModal}>
         <Modal.Header closeButton>
