@@ -32,17 +32,20 @@ const SearchProduct = (props) => {
                             {props.items.results.map(item => (
                                 <ItemCard key={item.id} item={item} />
                             ))}
-                            {/* TODO: fix pagination must below these item */}
-                            <div>
-                                <Pagination
-                                    count={props.items.totalPages}
-                                    page={page}
-                                    size='large'
-                                    onChange={handlePageChange}
-                                    showFirstButton
-                                    showLastButton
-                                />
-                            </div>
+                            <Pagination
+                                style={{
+                                    width: '100%',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center'
+                                }}
+                                count={props.items.totalPages}
+                                page={page}
+                                size='large'
+                                onChange={handlePageChange}
+                                showFirstButton
+                                showLastButton
+                            />
                         </div>
                     }
                 </div>

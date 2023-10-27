@@ -10,7 +10,7 @@ const Home = () => {
     const [featuredItems, setFeaturedItems] = useState();
     const [featuredCategories, setFeaturedCategories] = useState([]);
 
-    TabTitle("Home - Shema");
+    TabTitle("Home - Altermio");
 
     const fetchProductLists = async () => {
         await axios.get("http://localhost:3000/v1/productLists")
