@@ -13,7 +13,7 @@ function ManageProducts() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedproduct, setSelectedproduct] = useState(null);
   const [products, setProducts] = useState([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const productsPerPage = 8;

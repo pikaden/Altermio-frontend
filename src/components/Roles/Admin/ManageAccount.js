@@ -11,7 +11,7 @@ const ManageAccount = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const localHost = "localhost:3000/v1/users";
   const [users, setUsers] = useState([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const usersPerPage = 8;
 
