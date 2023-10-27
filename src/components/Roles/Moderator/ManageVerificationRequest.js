@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, TableCell, TableContainer, Table, TableHead, TableRow, TableBody } from "@mui/material";
+import { Box, Button, TableCell, TableContainer, Table, TableHead, TableRow, TableBody, Pagination } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import DeleteIcon from '@mui/icons-material/Delete';
 import VerifiedIcon from '@mui/icons-material/Verified';
@@ -13,14 +13,13 @@ function ManageVerificationRequest() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedproduct, setSelectedproduct] = useState(null);
   const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const productsPerPage = 8;
-  const pageCount = Math.ceil(products.length / productsPerPage);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   let accessToken = localStorage.getItem("accessToken");
 
 
   const getProducts = async () => {
-   await axios.get('http://localhost:3000/v1/products/manageProducts/all?verify=deny', {headers: {"Authorization" : `Bearer ${accessToken}`} }).then((response) => {
+   await axios.get(`http://localhost:3000/v1/products/manageProducts/all?verify=deny&page=${page}`, {headers: {"Authorization" : `Bearer ${accessToken}`} }).then((response) => {
       
       console.log(response);
       setProducts(response.data.results);
@@ -85,17 +84,15 @@ function ManageVerificationRequest() {
 
 
 
-  const offset = currentPage * productsPerPage;
-  const currentPageProducts = products.slice(offset, offset + productsPerPage);
 
-  const handlePageClick = (data) => {
-    const selectedPage = data.selected;
-    setCurrentPage(selectedPage);
-  };
+  const handlePageChange = (event, value) => {
+    setPage(value); 
+    console.log(page);    
+};
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [page]);
 
   return (
     <Box height={100}> 
@@ -122,7 +119,7 @@ function ManageVerificationRequest() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentPageProducts.map((product) => (
+            {products.map((product) => (
               <TableRow key={product.id}>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.category}</TableCell>
@@ -154,18 +151,15 @@ function ManageVerificationRequest() {
           </TableBody>
         </Table>
       </TableContainer>
-      <ReactPaginate
-      previousLabel={"Previous"}
-      nextLabel={"Next"}
-      breakLabel={"..."}
-      pageCount={pageCount}
-      marginPagesDisplayed={2}
-      pageRangeDisplayed={5}
-      onPageChange={handlePageClick}
-      containerClassName={"pagination"}  // Added a container class
-      subContainerClassName={"pagination li"}
-      activeClassName={"active"}
-      />
+      <Pagination
+        count={totalPages}
+        page={page}
+        size='large'
+        onChange={handlePageChange}
+        showFirstButton
+        showLastButton
+        className="pagination"
+        />
       <Modal show={modalIsOpen} onHide={handleCloseModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Delete Product</Modal.Title>

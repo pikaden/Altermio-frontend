@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, TableCell, TableContainer, Table, TableHead, TableRow, TableBody } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
@@ -129,8 +130,8 @@ function ManageReportedComment() {
         </Table>
       </TableContainer>
       <ReactPaginate
-      previousLabel={"Previous"}
-      nextLabel={"Next"}
+      previousLabel={<KeyboardArrowLeftIcon/>}
+      nextLabel={<KeyboardArrowRightIcon/>}
       breakLabel={"..."}
       pageCount={pageCount}
       marginPagesDisplayed={2}
