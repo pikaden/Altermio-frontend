@@ -13,7 +13,7 @@ const Search = () => {
     const [items, setItems] = useState()
 
     const searchKeyword = {
-        keyword: search.searchKeyword,
+        keyword: search.searchKeyword ? search.searchKeyword : localStorage.getItem('searchKeyword'),
         page: searchParams.get('page') ? searchParams.get('page') : 1,
         limit: searchParams.get('limit') ? searchParams.get('limit') : 10,
         sortBy: searchParams.get('sortBy') ? searchParams.get('sortBy') : 'createdAt'
@@ -34,7 +34,6 @@ const Search = () => {
         })
             .then(res => {
                 const products = res.data;
-                console.log('aaa: ' + JSON.stringify(products));
                 setItems(products);
             })
             .catch(err => console.log(err))

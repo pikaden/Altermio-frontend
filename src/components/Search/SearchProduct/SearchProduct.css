@@ -41,6 +41,17 @@
     border-radius: 25px;
 }
 
+.category__sort {
+    height: auto;
+    width: 30%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-self: flex-end;
+}
+
 .featured__products__card__container {
     margin-top: 20px;
     padding: 30px;
