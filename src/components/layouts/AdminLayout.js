@@ -1,11 +1,12 @@
-import { useAtom } from "jotai";
-import userAtom from "../Authentication/Atom/userAtom";
+
 import { Navigate, Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
-    const [user, setUser] = useAtom(userAtom);
 
-    console.log( 'aaa: ' + JSON.stringify(user));
+    const currentUser = localStorage.getItem("user");
+    
+    const user = JSON.parse(currentUser)
+
 
     if (user && user.role === 'admin') return (
         // TODO: create admin header

@@ -28,9 +28,9 @@ function ManageProducts() {
       setProducts(response.data.results);
       setTotalPages(response.data.totalPages);
     })
-    .catch((error) => {
-      console.log(error);
-    });
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
 
