@@ -21,10 +21,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import DocumentIcon from '@mui/icons-material/Description';
 import PeopleIcon from '@mui/icons-material/People';
 import InvetoryIcon from '@mui/icons-material/Inventory';
+import ReportIcon from '@mui/icons-material/Report';
 import Dashboard from './Dashboard';
-import RefundRequest from './RefundRequest';
-import ManageProducts from './ManageProducts';
-import ManageAccount from './ManageAccount';
+import ManageVerificationRequest from './ManageVerificationRequest';
+import ManageReportedComment from './ManageReportedComment';
 import { Title } from '@mui/icons-material';
 
 
@@ -141,7 +141,7 @@ export default function Admin() {
         </DrawerHeader>
         <Divider />
         <List>
-        {['Dashboard', 'Accounts', 'Products'].map((text, index) => (
+        {['Dashboard', 'Verification Request', 'Reported Comment'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => {
               setMenudata(text)
               console.log(text)
@@ -160,7 +160,7 @@ export default function Admin() {
                     justifyContent: 'center',
                   }}
                 >
-                  {index === 0 ? <HomeIcon /> : index === 1 ? <PeopleIcon /> : index === 2 ? <InvetoryIcon /> : <InvetoryIcon />}
+                  {index === 0 ? <HomeIcon /> : index === 1 ? <DocumentIcon /> : index === 2 ? <ReportIcon /> : <InvetoryIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -231,8 +231,8 @@ export default function Admin() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           {menudata === "Dashboard" && <Dashboard/>}       
-          {menudata === "Accounts" && <ManageAccount/>}
-          {menudata === "Products" && <ManageProducts/>}
+          {menudata === "Verification Request" && <ManageVerificationRequest/>}
+          {menudata === "Reported Comment" && <ManageReportedComment/>}
       </Box>
     </Box>
   );
