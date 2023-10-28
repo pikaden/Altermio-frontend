@@ -37,6 +37,15 @@
     align-self: flex-start;
 }
 
+.featured__items__header__big {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.featured__header__small {
+    margin: auto 20px;
+}
+
 .category__header__line {
     width: 120px;
     height: 6px;

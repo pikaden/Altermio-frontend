@@ -6,7 +6,7 @@ import { useContext } from 'react';
 import { SearchContext } from '../../../Context/SearchContext';
 
 const Form = () => {
-    const [ searchInput, setSearchInput] = useState('')
+    const [ searchInput, setSearchInput] = useState(localStorage.getItem('searchKeyword') ?? '')
     const searchContext = useContext(SearchContext)
     const navigate = useNavigate()
 
@@ -17,6 +17,7 @@ const Form = () => {
     const handleFormSubmit = (e) => {  
         e.preventDefault()
         searchContext.setSearchKeyword(searchInput)
+        localStorage.setItem('searchKeyword', searchInput)
         navigate('/search')
     }
 

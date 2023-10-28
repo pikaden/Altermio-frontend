@@ -13,10 +13,22 @@ import { useSearchParams } from 'react-router-dom';
 const Category = (props) => {
     TabTitle(props.name)
 
-    const [show, setShow] = useState('All');
-    const [filter, setFilter] = useState('Latest');
+    const [limit, setLimit] = useState(10);
+    const [sortBy, setSortBy] = useState('');
     const [page, setPage] = useState(props.defaultPage ? parseInt(props.defaultPage) : 1);
     const [searchParams, setSearchParams] = useSearchParams()
+
+    const ALL_LIMIT_VALS = [
+        { id: 0, value: 5 },
+        { id: 1, value: 10 },
+    ];
+
+    const ALL_SORT_BY_VALS = [
+        { id: 0, value: 'name' },
+        { id: 1, value: 'category' },
+        { id: 2, value: 'state' },
+        { id: 3, value: 'brand' },
+    ];
 
     const handlePageChange = async (event, value) => {
         setPage(value);
@@ -25,12 +37,18 @@ const Category = (props) => {
         setSearchParams(searchParams);
     };
 
-    const handleShowChange = (event) => {
-        setShow(event.target.value);
+    const handleLimitChange = (event) => {
+        setLimit(event.target.value);
+
+        searchParams.set('limit', event.target.value);
+        setSearchParams(searchParams);
     };
 
-    const handleFilterChange = (event) => {
-        setFilter(event.target.value);
+    const handleSortByChange = (event) => {
+        setSortBy(event.target.value);
+
+        searchParams.set('sortBy', event.target.value);
+        setSearchParams(searchParams);
     };
 
     return (
@@ -39,7 +57,8 @@ const Category = (props) => {
                 <div className="category__header__container">
                     <div className="category__header__big">
                         <div className="category__header">
-                            <h2>{props.name}</h2>
+                            <span className='featured__items__header__big'>{props.name}</span>
+                            <span className='featured__header__small'>{props.items.totalResults} results</span>
                         </div>
                         <div className="category__header__line"></div>
                     </div>
@@ -47,13 +66,15 @@ const Category = (props) => {
                         <div className="show__filter">
                             <Box sx={{ minWidth: 100 }}>
                                 <FormControl fullWidth size="small">
-                                    <InputLabel>Show</InputLabel>
+                                    <InputLabel>Limit</InputLabel>
                                     <Select
-                                        value={show}
-                                        label="Show"
-                                        onChange={handleShowChange}
+                                        value={limit}
+                                        label="Limit"
+                                        onChange={handleLimitChange}
                                     >
-                                        <MenuItem value={'All'}>All</MenuItem>
+                                        {ALL_LIMIT_VALS.map((option, index) => (
+                                            <MenuItem key={option.id} value={option.value}>{option.value}</MenuItem>
+                                        ))}
                                     </Select>
                                 </FormControl>
                             </Box>
@@ -62,13 +83,15 @@ const Category = (props) => {
                             <div className="show__filter">
                                 <Box sx={{ width: 120 }}>
                                     <FormControl fullWidth size="small">
-                                        <InputLabel>Filter by</InputLabel>
+                                        <InputLabel>Sort by</InputLabel>
                                         <Select
-                                            value={filter}
-                                            label="Filter"
-                                            onChange={handleFilterChange}
+                                            value={sortBy}
+                                            label="Sort by"
+                                            onChange={handleSortByChange}
                                         >
-                                            <MenuItem value={'Latest'}>Latest</MenuItem>
+                                            {ALL_SORT_BY_VALS.map((option, index) => (
+                                                <MenuItem key={option.id} value={option.value}>{option.value}</MenuItem>
+                                            ))}
                                         </Select>
                                     </FormControl>
                                 </Box>
@@ -80,6 +103,12 @@ const Category = (props) => {
                     <div className="category__product__card">
                         {props.items.results.products.map((data) => <ItemCard key={data.id} item={data} category={props.category} />)}
                         <Pagination
+                            style={{
+                                width: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center'
+                            }}
                             count={props.items.totalPages}
                             page={page}
                             size='large'
