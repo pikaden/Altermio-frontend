@@ -70,7 +70,8 @@ const ManageAccount = () => {
         }
       )
       .then((response) => {
-        console.log(response);
+        // open _blank payment link
+        window.open(response.data);
       })
       .catch((error) => {
         console.log(error);
