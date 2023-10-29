@@ -1,8 +1,11 @@
 import Account from '../Account';
 import './MyAccount.css';
 import { Link } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 const MyAccount = () => {
+    const currentUser = localStorage.getItem("user");
+    const user = JSON.parse(currentUser)
     return ( 
         <Account>
             <div className="order__history__container">
@@ -17,8 +20,8 @@ const MyAccount = () => {
                     <div className="logout__action">Logout</div>
                 </div>
                 <div className="account__details">
-                    <div className="account__holder__name">Account holder name</div>
-                    <div className="account__holder__email">Account holder email</div>
+                    <div className="account__holder__name">{user.firstName} {user.lastName}</div>
+                    <div className="account__holder__email">{user.email}</div>
                     <div className="manage__account__action">
                         <Link to="/account/manage">Manage account</Link>   
                     </div>
