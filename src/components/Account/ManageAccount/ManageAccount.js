@@ -81,7 +81,7 @@ const ManageAccount = () => {
   const handleUpdateUser = async () => {
     await axios
       .patch(
-        `http://localhost:3000/v1/users`,
+        `http://localhost:3000/v1/users/me/profile`,
         {
           address: res.address,
           email: res.email,

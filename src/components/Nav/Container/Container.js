@@ -15,9 +15,9 @@ const Navtop = () => {
                             <ul className="nav">
                                 <li className='nav-link'><Link to="/">Home</Link></li> 
                                 <li className='nav-link'><Link to="/shop">Shop</Link> </li>
-                                <li className='nav-link'><Link to="/category/men">New</Link></li> 
-                                <li className='nav-link'><Link to="/category/women">Contact</Link></li> 
-                                <li className='nav-link'><Link to="/category/kids">About us</Link></li>
+                                <li className='nav-link'><Link to="/new">New</Link></li> 
+                                <li className='nav-link'><Link to="/contact">Contact</Link></li> 
+                                <li className='nav-link'><Link to="/about">About us</Link></li>
                             </ul>
                         </div>
                     </nav>
