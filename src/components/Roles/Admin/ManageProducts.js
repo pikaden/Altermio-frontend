@@ -22,7 +22,7 @@ function ManageProducts() {
 
 
   const getProducts = async () => {
-   await axios.get(`http://localhost:3000/v1/products/manageProducts/all?activate=accept&page=${page}`, {headers: {"Authorization" : `Bearer ${accessToken}`} }).then((response) => {
+   await axios.get(`http://localhost:3000/v1/products/manageProducts/all?activate=accept&page=${page}&limit=8`, {headers: {"Authorization" : `Bearer ${accessToken}`} }).then((response) => {
       
       console.log(response);
       setProducts(response.data.results);
