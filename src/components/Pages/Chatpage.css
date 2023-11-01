@@ -1,0 +1,11 @@
+.Chatpage {
+    min-height: 100vh;
+    width: 100%;
+    background-image: url("../../asset/img/background.png");
+    background-position: center;
+    background-size: cover;
+}
+
+.chakra-ui-light {
+    overflow-y: hidden;
+}
