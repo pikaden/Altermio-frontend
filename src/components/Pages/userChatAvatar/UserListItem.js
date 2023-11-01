@@ -1,9 +1,29 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Box, Text } from "@chakra-ui/layout";
-import { ChatState } from "../Provider/ChatProvider";
+import { useEffect, useState } from "react";
+import { defaultImage } from "../../../Context/DefaultImage";
+import axios from "axios";
 
-const UserListItem = ({ handleFunction }) => {
-  const { user } = ChatState();
+const UserListItem = ({ user, handleFunction }) => {
+
+  const [imageUrl, setImageUrl] = useState();
+  const defaultImageUrl = defaultImage;
+
+  const fetchImage = async () => {
+    // get image by id and return url
+    await axios.get(`http://localhost:3000/v1/images/${user.avatar}`)
+      .then(res => {
+        const imageRes = res.data ?
+          res.data.image.url :
+          defaultImageUrl;
+        setImageUrl(imageRes);
+      })
+      .catch(err => console.log(err))
+  }
+
+  useEffect(() => {
+    fetchImage();
+}, [imageUrl])
 
   return (
     <Box
@@ -27,11 +47,11 @@ const UserListItem = ({ handleFunction }) => {
         mr={2}
         size="sm"
         cursor="pointer"
-        name={user.name}
-        src={user.pic}
+        name={`${user.firstName + user.lastName}`}
+        src={imageUrl}
       />
       <Box>
-        <Text>{user.name}</Text>
+        <Text>{`${user.firstName + ' ' + user.lastName}`}</Text>
         <Text fontSize="xs">
           <b>Email : </b>
           {user.email}

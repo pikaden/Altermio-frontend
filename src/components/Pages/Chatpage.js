@@ -11,7 +11,6 @@ const Chatpage = () => {
   const { user } = ChatState();
 
   return (
-    // console.log('aaa: ' + user),
     <div className="Chatpage">
       {user && <SideDrawer />}
       <Box display="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">

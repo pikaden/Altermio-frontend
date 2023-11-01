@@ -36,6 +36,7 @@ function SideDrawer() {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
+  let accessToken = localStorage.getItem("accessToken");
 
   const {
     setSelectedChat,
@@ -74,10 +75,11 @@ function SideDrawer() {
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
+          access_token: accessToken,
         },
       };
 
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(`http://localhost:3000/v1/users/search/?search=${search}`, config);
 
       setLoading(false);
       setSearchResult(data);
@@ -104,7 +106,7 @@ function SideDrawer() {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(`/api/chat`, { userId }, config);
+      const { data } = await axios.post(`http://localhost:3000/v1/chats`, { userId }, config);
 
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
       setSelectedChat(data);
@@ -219,9 +221,9 @@ function SideDrawer() {
             ) : (
               searchResult?.map((user) => (
                 <UserListItem
-                  key={user._id}
+                  key={user.id}
                   user={user}
-                  handleFunction={() => accessChat(user._id)}
+                  handleFunction={() => accessChat(user.id)}
                 />
               ))
             )}
