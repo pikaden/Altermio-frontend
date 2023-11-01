@@ -98,6 +98,14 @@ export default function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const password = data.get('password')
+    const repassword = data.get('repassword')
+    if (password.length < 8) {
+      alert('Password need to be atleast 8 characters')
+    }
+    if (!password.match(repassword)) {
+      alert('Enter password need to be matched')
+    }
     const detailsaddress = data.get("detailsAddress");
     const address =
       detailsaddress +
@@ -107,14 +115,14 @@ export default function Register() {
       selectedDistrict.stateName +
       ", " +
       selectedCity.stateName;
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      phoneNumber: data.get("phoneNumber"),
-      address: address,
-    });
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    //   firstName: data.get("firstName"),
+    //   lastName: data.get("lastName"),
+    //   phoneNumber: data.get("phoneNumber"),
+    //   address: address,
+    // });
     await axios
       .post(`http://localhost:3000/v1/auth/register`, {
         email: data.get("email"),
@@ -195,17 +203,17 @@ export default function Register() {
                   autoComplete="new-password"
                 />
               </Grid>
-              {/* <Grid item xs={12}>
+              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
                   name="repassword"
                   label="Re-Enter Password"
                   type="password"
-                  id="password"
+                  id="repassword"
                   autoComplete="new-password"
                 />
-              </Grid> */}
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
