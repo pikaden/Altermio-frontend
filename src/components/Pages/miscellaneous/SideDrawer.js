@@ -52,7 +52,10 @@ function SideDrawer() {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
-    localStorage.removeItem("userInfo");
+    // TODO: logout user
+    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
 
     navigate('/');
   };
@@ -104,6 +107,7 @@ function SideDrawer() {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${user.token}`,
+          access_token: accessToken,
         },
       };
       const { data } = await axios.post(`http://localhost:3000/v1/chats`, { userId }, config);
@@ -125,6 +129,7 @@ function SideDrawer() {
   };
 
   return (
+    console.log('notification: ' + notification.length),
     <>
       <Box
         display="flex"
@@ -168,6 +173,7 @@ function SideDrawer() {
             <MenuList pl={2}>
               {!notification.length && "No New Messages"}
               {notification.map((notif) => (
+                console.log('notif: ' + notif),
                 <MenuItem
                   key={notif._id}
                   onClick={() => {
@@ -187,8 +193,8 @@ function SideDrawer() {
               <Avatar
                 size="sm"
                 cursor="pointer"
-                name={user.name}
-                src={user.pic}
+                name={`${user.firstName} + ' ' + ${user.lastName} `}
+                src={user.avatar}
               />
             </MenuButton>
             <MenuList>

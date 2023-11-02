@@ -11,6 +11,7 @@ import { ChatState } from "../Provider/ChatProvider";
 
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
+  let accessToken = localStorage.getItem("accessToken");
 
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
@@ -22,10 +23,11 @@ const MyChats = ({ fetchAgain }) => {
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
+          access_token: accessToken,
         },
       };
 
-      const { data } = await axios.get("/api/chat", config);
+      const { data } = await axios.get("http://localhost:3000/v1/chats", config);
       setChats(data);
     } catch (error) {
       toast({
@@ -40,7 +42,7 @@ const MyChats = ({ fetchAgain }) => {
   };
 
   useEffect(() => {
-    setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
+    setLoggedUser(JSON.parse(localStorage.getItem("user")));
     fetchChats();
     // eslint-disable-next-line
   }, [fetchAgain]);
@@ -108,7 +110,7 @@ const MyChats = ({ fetchAgain }) => {
                 </Text>
                 {chat.latestMessage && (
                   <Text fontSize="xs">
-                    <b>{chat.latestMessage.sender.name} : </b>
+                    <b>{`${chat.latestMessage.sender.firstName} ${chat.latestMessage.sender.lastName}`} : </b>
                     {chat.latestMessage.content.length > 50
                       ? chat.latestMessage.content.substring(0, 51) + "..."
                       : chat.latestMessage.content}

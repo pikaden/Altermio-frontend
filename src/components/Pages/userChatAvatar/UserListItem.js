@@ -9,7 +9,7 @@ const UserListItem = ({ user, handleFunction }) => {
   const [imageUrl, setImageUrl] = useState();
   const defaultImageUrl = defaultImage;
 
-  const fetchImage = async () => {
+  const fetchAvatar = async () => {
     // get image by id and return url
     await axios.get(`http://localhost:3000/v1/images/${user.avatar}`)
       .then(res => {
@@ -22,8 +22,8 @@ const UserListItem = ({ user, handleFunction }) => {
   }
 
   useEffect(() => {
-    fetchImage();
-}, [imageUrl])
+    fetchAvatar();
+  }, [imageUrl])
 
   return (
     <Box

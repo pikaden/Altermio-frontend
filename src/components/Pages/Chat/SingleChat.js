@@ -26,6 +26,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const toast = useToast();
+  let accessToken = localStorage.getItem("accessToken");
 
   const defaultOptions = {
     loop: true,
@@ -51,7 +52,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `/api/message/${selectedChat._id}`,
+        `http://localhost:3000/v1/messages/${selectedChat._id}`,
         config
       );
       setMessages(data);
@@ -78,11 +79,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           headers: {
             "Content-type": "application/json",
             Authorization: `Bearer ${user.token}`,
+            access_token: accessToken,
           },
         };
         setNewMessage("");
         const { data } = await axios.post(
-          "/api/message",
+          "http://localhost:3000/v1/messages",
           {
             content: newMessage,
             chatId: selectedChat,
