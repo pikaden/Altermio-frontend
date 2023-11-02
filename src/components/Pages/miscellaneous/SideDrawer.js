@@ -30,6 +30,7 @@ import { getSender } from "../config/ChatLogics";
 import UserListItem from "../userChatAvatar/UserListItem";
 import { ChatState } from "../Provider/ChatProvider";
 import { Badge } from "@chakra-ui/react";
+import { async } from "q";
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
@@ -51,13 +52,15 @@ function SideDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
-  const logoutHandler = () => {
-    // TODO: logout user
-    localStorage.removeItem("user");
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+  const logoutHandler = async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    const data = {
+      refreshToken: refreshToken
+    };
 
-    navigate('/');
+    axios.post('http://localhost:3000/v1/auth/logout/', data);
+    localStorage.clear();
+    navigate("/account/login")
   };
 
   const handleSearch = async () => {
@@ -129,7 +132,6 @@ function SideDrawer() {
   };
 
   return (
-    console.log('notification: ' + notification.length),
     <>
       <Box
         display="flex"
@@ -173,7 +175,6 @@ function SideDrawer() {
             <MenuList pl={2}>
               {!notification.length && "No New Messages"}
               {notification.map((notif) => (
-                console.log('notif: ' + notif),
                 <MenuItem
                   key={notif._id}
                   onClick={() => {

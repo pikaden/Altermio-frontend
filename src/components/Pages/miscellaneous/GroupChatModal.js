@@ -27,6 +27,8 @@ const GroupChatModal = ({ children }) => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  
+  let accessToken = localStorage.getItem("accessToken");
 
   const { user, chats, setChats } = ChatState();
 
@@ -56,10 +58,10 @@ const GroupChatModal = ({ children }) => {
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
+          access_token: accessToken,
         },
       };
-      const { data } = await axios.get(`http://localhost:3000/v1/users/?search=${search}`, config);
-      console.log(data);
+      const { data } = await axios.get(`http://localhost:3000/v1/users/search/?search=${search}`, config);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -75,7 +77,7 @@ const GroupChatModal = ({ children }) => {
   };
 
   const handleDelete = (delUser) => {
-    setSelectedUsers(selectedUsers.filter((sel) => sel._id !== delUser._id));
+    setSelectedUsers(selectedUsers.filter((sel) => sel.id !== delUser.id));
   };
 
   const handleSubmit = async () => {
@@ -94,13 +96,14 @@ const GroupChatModal = ({ children }) => {
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
+          access_token: accessToken
         },
       };
       const { data } = await axios.post(
         `http://localhost:3000/v1/chats/group`,
         {
           name: groupChatName,
-          users: JSON.stringify(selectedUsers.map((u) => u._id)),
+          users: JSON.stringify(selectedUsers.map((u) => u.id)),
         },
         config
       );
@@ -159,8 +162,9 @@ const GroupChatModal = ({ children }) => {
             <Box w="100%" display="flex" flexWrap="wrap">
               {selectedUsers.map((u) => (
                 <UserBadgeItem
-                  key={u._id}
+                  key={u.id}
                   user={u}
+                  role={u.role}
                   handleFunction={() => handleDelete(u)}
                 />
               ))}
@@ -173,7 +177,7 @@ const GroupChatModal = ({ children }) => {
                 ?.slice(0, 4)
                 .map((user) => (
                   <UserListItem
-                    key={user._id}
+                    key={user.id}
                     user={user}
                     handleFunction={() => handleGroup(user)}
                   />

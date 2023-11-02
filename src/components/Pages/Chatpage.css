@@ -6,10 +6,6 @@
     background-size: cover;
 }
 
-.chakra-ui-light {
-    overflow-y: hidden;
-}
-
 ::-webkit-scrollbar {
     width: 0px;
 }
