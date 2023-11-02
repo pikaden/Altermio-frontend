@@ -27,6 +27,8 @@ import ModeratorPage from "../components/Roles/Moderator/ModeratorPage";
 import CourierPage from "../components/Roles/Courier/CourierPage";
 import ContactUs from "../components/Nav/ContactUs/ContactUs";
 import AboutUs from "../components/Nav/AboutUs/AboutUs";
+import Chatpage from "../components/Pages/Chatpage";
+import ChatLayout from "../components/layouts/ChatLayout";
 
 function App() {
   return (
@@ -41,15 +43,18 @@ function App() {
           <Route path="/moderator" element={<ModeratorPage />} />
           <Route path="/*" element={<ModeratorPage />} />
         </Route>
+        
+        <Route path="/account">
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="*" element={<Login />} />
+        </Route>
 
         <Route element={<UserLayout />}>
           <Route index element={<Home />} />
           <Route path="/account">
             <Route path="me" element={<MyAccount />} />
             <Route path="manage" element={<ManageAccount />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="*" element={<Login />} />
           </Route>
 
           <Route path="/shop" element={<Shop />} />
@@ -81,6 +86,11 @@ function App() {
 
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/about" element={<AboutUs />} />
+
+        </Route>
+
+        <Route element={<ChatLayout />} >
+          <Route path="/chats" element={<Chatpage />} />
         </Route>
 
         <Route element={<CourierLayout />}>

@@ -9,6 +9,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import { useNavigate } from "react-router-dom";
 import HistoryIcon from "@mui/icons-material/History";
+import axios from "axios";
 
 export default function FadeMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -30,6 +31,12 @@ export default function FadeMenu() {
 
   const handleLogout = () => {
     setAnchorEl(null);
+    const refreshToken = localStorage.getItem('refreshToken');
+    const data = {
+      refreshToken: refreshToken
+    };
+
+    axios.post('http://localhost:3000/v1/auth/logout/', data);
     localStorage.clear();
     navigate("/account/login")
   }

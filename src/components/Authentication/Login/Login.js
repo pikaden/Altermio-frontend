@@ -36,7 +36,7 @@ export default function Login() {
             .then(res => {
                 console.log(res);
                 const accessToken = res.data.tokens.access.token;
-                const refreshToken = res.data.tokens.refresh;
+                const refreshToken = res.data.tokens.refresh.token;
                 const userRole = res.data.user.role;
 
                 localStorage.setItem("accessToken", accessToken);
