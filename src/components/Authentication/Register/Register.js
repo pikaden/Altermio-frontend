@@ -22,6 +22,7 @@ const defaultTheme = createTheme();
 const host = "https://provinces.open-api.vn/api/";
 
 export default function Register() {
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const navigate = useNavigate();
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -96,15 +97,38 @@ export default function Register() {
   };
 
   const handleSubmit = async (event) => {
+    const numberOrSpecialCharacterRegex = /[\d\W]/;
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const password = data.get('password')
-    const repassword = data.get('repassword')
+    const password = data.get("password");
+    const repassword = data.get("repassword");
+    const email = data.get("email")
+    const firstName = data.get("firstName")
+    const lastName = data.get("lastName")
+    if (numberOrSpecialCharacterRegex.test(firstName)){
+      alert("First name is not valid with number, special character");
+      event.preventDefault();
+      return;
+    }
+    if (numberOrSpecialCharacterRegex.test(lastName)){
+      alert("Last name is not valid with number, special character");
+      event.preventDefault();
+      return;
+    }
     if (password.length < 8) {
-      alert('Password need to be atleast 8 characters')
+      alert("Password need to be atleast 8 characters");
+      event.preventDefault();
+      return;
     }
     if (!password.match(repassword)) {
-      alert('Enter password need to be matched')
+      alert("Enter password need to be matched");
+      event.preventDefault();
+      return;
+    }
+    if (!emailRegex.test(email)) {
+      alert("Email is not valid");
+      event.preventDefault();
+      return;
     }
     const detailsaddress = data.get("detailsAddress");
     const address =
@@ -300,7 +324,13 @@ export default function Register() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2" onClick={() => {navigate('/account/login')}}>
+                <Link
+                  href="#"
+                  variant="body2"
+                  onClick={() => {
+                    navigate("/account/login");
+                  }}
+                >
                   Already have an account? Sign in
                 </Link>
               </Grid>
