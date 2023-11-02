@@ -22,7 +22,8 @@ const defaultTheme = createTheme();
 const host = "https://provinces.open-api.vn/api/";
 
 export default function Register() {
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const navigate = useNavigate();
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -96,21 +97,41 @@ export default function Register() {
     }));
   };
 
+  const handleEmail = async (email) => {
+    const response = await axios
+      .post(`http://localhost:3000/v1/auth/check-email-taken`, {
+        email: email,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          if (response.data === true) {
+            alert("Email is already Taken");
+          }
+        } else {
+          return true;
+        }
+      })
+      .catch((error) => {
+        return true;
+      });
+  };
+
   const handleSubmit = async (event) => {
     const numberOrSpecialCharacterRegex = /[\d\W]/;
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const password = data.get("password");
     const repassword = data.get("repassword");
-    const email = data.get("email")
-    const firstName = data.get("firstName")
-    const lastName = data.get("lastName")
-    if (numberOrSpecialCharacterRegex.test(firstName)){
+    const email = data.get("email");
+    const firstName = data.get("firstName");
+    const lastName = data.get("lastName");
+    handleEmail(email);
+    if (numberOrSpecialCharacterRegex.test(firstName)) {
       alert("First name is not valid with number, special character");
       event.preventDefault();
       return;
     }
-    if (numberOrSpecialCharacterRegex.test(lastName)){
+    if (numberOrSpecialCharacterRegex.test(lastName)) {
       alert("Last name is not valid with number, special character");
       event.preventDefault();
       return;
@@ -139,14 +160,6 @@ export default function Register() {
       selectedDistrict.stateName +
       ", " +
       selectedCity.stateName;
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    //   firstName: data.get("firstName"),
-    //   lastName: data.get("lastName"),
-    //   phoneNumber: data.get("phoneNumber"),
-    //   address: address,
-    // });
     await axios
       .post(`http://localhost:3000/v1/auth/register`, {
         email: data.get("email"),
@@ -214,6 +227,7 @@ export default function Register() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  // onChange={(event) => handleEmail(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
