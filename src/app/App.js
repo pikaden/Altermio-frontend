@@ -43,15 +43,18 @@ function App() {
           <Route path="/moderator" element={<ModeratorPage />} />
           <Route path="/*" element={<ModeratorPage />} />
         </Route>
+        
+        <Route path="/account">
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="*" element={<Login />} />
+        </Route>
 
         <Route element={<UserLayout />}>
           <Route index element={<Home />} />
           <Route path="/account">
             <Route path="me" element={<MyAccount />} />
             <Route path="manage" element={<ManageAccount />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="*" element={<Login />} />
           </Route>
 
           <Route path="/shop" element={<Shop />} />

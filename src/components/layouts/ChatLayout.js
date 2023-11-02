@@ -19,7 +19,7 @@ const ChatLayout = () => {
     )
 
     return (
-        <Navigate to='/' />
+        <Navigate to='/account/login' />
     )
 }
 
