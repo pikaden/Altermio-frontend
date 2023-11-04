@@ -29,6 +29,7 @@ import ContactUs from "../components/Nav/ContactUs/ContactUs";
 import AboutUs from "../components/Nav/AboutUs/AboutUs";
 import Chatpage from "../components/Pages/Chatpage";
 import ChatLayout from "../components/layouts/ChatLayout";
+import PostProduct from "../components/Nav/PostProduct/PostProduct";
 
 function App() {
   return (
@@ -61,7 +62,8 @@ function App() {
           <Route path="/category">
             <Route path=":id" element={<CategoryView />} />
           </Route>
-
+          <Route path="/products/create" element={<PostProduct />} />
+          
           <Route path="/item">
             <Route path="/item/">
               <Route path=":id" element={<ItemView />} />
