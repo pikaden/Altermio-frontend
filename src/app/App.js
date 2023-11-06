@@ -27,6 +27,7 @@ import ModeratorPage from "../components/Roles/Moderator/ModeratorPage";
 import CourierPage from "../components/Roles/Courier/CourierPage";
 import ContactUs from "../components/Nav/ContactUs/ContactUs";
 import AboutUs from "../components/Nav/AboutUs/AboutUs";
+import UserView from "../routes/UserView";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
             <Route path="manage" element={<ManageAccount />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path=":id" element={<UserView />} />
             <Route path="*" element={<Login />} />
           </Route>
 
