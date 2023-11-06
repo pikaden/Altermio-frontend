@@ -33,7 +33,7 @@ const Home = () => {
     return (
         <Fragment>
             <Landing />
-            <FeaturedCategories items={featuredCategories} />
+            <FeaturedCategories items={featuredCategories.slice(0, 3)} />
             <FeaturedItems items={featuredItems} />
         </Fragment>
     );
