@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import ItemCard from "../../Card/ItemCard/ItemCard";
 import './ShopCategory.css'
