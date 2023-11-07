@@ -160,7 +160,11 @@ function ManageVerificationRequest() {
         showLastButton
         className="pagination"
         />
-      <Modal show={modalIsOpen} onHide={handleCloseModal}>
+      <Modal show={modalIsOpen} onHide={handleCloseModal}
+        style={{
+          marginTop: "50px",
+        }}
+      >
                     <Modal.Header closeButton>
                         <Modal.Title>Delete Product</Modal.Title>
                     </Modal.Header>

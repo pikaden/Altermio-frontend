@@ -142,7 +142,11 @@ function ManageReportedComment() {
       activeClassName={"active"}
       />
 
-<Modal show={modalIsOpen} onHide={handleCloseModal}>
+<Modal show={modalIsOpen} onHide={handleCloseModal}
+  style={{
+    marginTop: "50px",
+  }}
+>
         <Modal.Header closeButton>
           <Modal.Title>Update Reported Comment</Modal.Title>
         </Modal.Header>

@@ -144,7 +144,7 @@ function ManageProducts() {
                   <div
                     className={`verification-badge ${product.verify === 'deny' ? "not-verified" : "verified"}`}
                   >
-                    {product.verify ? "Not Verified" : "Verified"}
+                    {product.verify === 'deny' ? "Not Verified" : "Verified"}
                   </div>
                 </TableCell>
                 <TableCell>
@@ -166,7 +166,11 @@ function ManageProducts() {
         showLastButton
         className="pagination"
         />       
-      <Modal show={modalIsOpen} onHide={handleCloseModal}>
+      <Modal show={modalIsOpen} onHide={handleCloseModal} 
+        style={{
+          marginTop: "50px",
+        }}
+      >
                     <Modal.Header closeButton>
                         <Modal.Title>Delete Product</Modal.Title>
                     </Modal.Header>
