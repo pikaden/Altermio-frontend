@@ -13,7 +13,7 @@ const UserView = () => {
     window.scrollTo(0, 0);
     const fetchUser = async () => {
       await axios
-        .get(`http://localhost:3000/v1/users/${param.id}`)
+        .get(`http://localhost:3000/v1/comments/user/${param.id}`)
         .then((res) => {
           const user = res.data;
           setUser(user);
