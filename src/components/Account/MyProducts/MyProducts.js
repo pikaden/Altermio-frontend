@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./MyProducts.css";
 import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination, Button } from '@mui/material';
 import BuildIcon from '@mui/icons-material/Build';
 
 const MyProducts = () => {
@@ -56,9 +56,9 @@ const MyProducts = () => {
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Price</TableCell>
-              {/* <TableCell>Category</TableCell> */}
               <TableCell>State</TableCell>
               <TableCell>Brand</TableCell>
+              <TableCell>Verification</TableCell>
             </TableRow>
           </TableHead>
           {items && (
@@ -71,9 +71,24 @@ const MyProducts = () => {
                     </Link>
                   </TableCell>
                   <TableCell>{product.price}</TableCell>
-                  {/* <TableCell>{product.category}</TableCell> */}
                   <TableCell>{product.state}</TableCell>
                   <TableCell>{product.brand}</TableCell>
+                  <TableCell>
+                    {product.verify === 'pending' ?
+                      <div className={`verification-badge pending`}>
+                        Pending
+                      </div>
+                      :
+                      product.verify === 'accept' ?
+                        <div className={`verification-badge verified`}>
+                          Verified
+                        </div>
+                        :
+                        <div className={`verification-badge not-verified`}>
+                          Not Verified
+                        </div>
+                    }
+                  </TableCell>
                   <TableCell>
                     <Link to={`/products/manage/${product.id}`}>
                       <BuildIcon />
