@@ -32,12 +32,12 @@
     border: 2px solid red;
     color: red;
   }
-  .verification-badge.true {
+  .verification-badge.active {
     border: 2px solid green;
     color: green;
   }
   
-  .verification-badge.false {
+  .verification-badge.inactive {
     border: 2px solid red;
     color: red;
   }

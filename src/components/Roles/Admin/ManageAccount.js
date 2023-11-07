@@ -38,7 +38,7 @@ const ManageAccount = () => {
     passwordError: ""
   });
   const [emailIsExist, setEmailIsExist] = useState("");
-
+// Get all users
   const getUsers = async () => {
     await axios.get(`http://localhost:3000/v1/users?page=${page}&limit=8`, { headers: { "Authorization": `Bearer ${accessToken}` } })
       .then((response) => {
@@ -51,7 +51,7 @@ const ManageAccount = () => {
       });
   };
 
-
+// Update account
   const handleUpdateAccount = async () => {
     const isValid = validateFields(selectedUser);
     if (isValid) {
@@ -67,16 +67,28 @@ const ManageAccount = () => {
       .then((response) => {
         console.log(response);
         getUsers();
+        setModalIsOpen(false);
+        setValidationErrors({
+          firstNameError: "",
+          lastNameError: "",
+          phoneNumberError: "",
+          emailError: "",
+          passwordError: ""
+        });
       })
       .catch((error) => {
-        console.log(error);
-      });
-
-      setModalIsOpen(false);
-      setValidationErrors({});
+        if(error.response.data.message === "Email already taken"){
+          setEmailIsExist("Email already taken");
+          console.log(emailIsExist);
+        }
+        else{
+          console.log(error);
+        }
+          
+      }); 
     }
   };
-
+// Delete account
     const handleDeleteAccount = async () => {
     await axios.delete(`http://localhost:3000/v1/users/${selectedUser.id}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
       .then((response) => {
@@ -89,7 +101,7 @@ const ManageAccount = () => {
 
       setModalIsOpen(false);
     };
-
+// Create account
     const handleCreateAccount = async () => {
       console.log(newUser);
     if(newUser.role === ""){
@@ -175,7 +187,28 @@ const ManageAccount = () => {
 
   const handleCloseModal = () => {
     setSelectedUser(null);
+    setValidationErrors({
+      firstNameError: "",
+      lastNameError: "",
+      phoneNumberError: "",
+      emailError: "",
+      passwordError: ""
+    });
+    setEmailIsExist("");
     setModalIsOpen(false);
+  };
+
+  const handleCloseCreateModal = () => {
+    setNewUser({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      role: ""
+    });
+    setValidationErrors({});
+    setEmailIsExist("");
+    setCreateModalIsOpen(false);
   };
 
 
@@ -260,9 +293,11 @@ const ManageAccount = () => {
         className="pagination"
         />
 
-      <Modal show={modalIsOpen} onHide={handleCloseModal}>
+      <Modal show={modalIsOpen} onHide={handleCloseModal} style={{
+        marginTop: "50px",
+      }}>
         <Modal.Header closeButton>
-          <Modal.Title>Update Flash Card</Modal.Title>
+          <Modal.Title>Update Account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="form-group">
@@ -324,6 +359,11 @@ const ManageAccount = () => {
                 {color: "red"}
               }>{validationErrors.emailError}</div>
             )}
+            {emailIsExist && (
+              <div style={
+                {color: "red"}
+              }>{emailIsExist}</div>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="name">Role</label>
@@ -364,7 +404,7 @@ const ManageAccount = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Modal show={createModalIsOpen} onHide={() => {setCreateModalIsOpen(false)}}>
+      <Modal show={createModalIsOpen} onHide={handleCloseCreateModal}>
         <Modal.Header closeButton>
           <Modal.Title>Create User</Modal.Title>
         </Modal.Header>
