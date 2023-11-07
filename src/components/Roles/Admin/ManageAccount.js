@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, TableCell, TableContainer, Table, TableHead, TableRow, TableBody, Pagination } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import BuildIcon from '@mui/icons-material/Build';
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import "./ManageAccount.css";
@@ -13,18 +14,33 @@ const ManageAccount = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const usersPerPage = 8;
+  const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
+  const [newUser, setNewUser] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    role: "admin"
+  });
 
   let accessToken = localStorage.getItem("accessToken");
   // Validation functions for each field
   const isNameValid = (name) => /^[A-Za-z\s]+$/.test(name);
   const isEmailValid = (email) => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(email);
   const isPhoneNumberValid = (phoneNumber) => /^\d{10}$/.test(phoneNumber);
+  const isPasswordValid = (password) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password);
   // State to store field validation errors
-  const [validationErrors, setValidationErrors] = useState({});
-
+  const [validationErrors, setValidationErrors] = useState({
+    firstNameError: "",
+    lastNameError: "",
+    phoneNumberError: "",
+    emailError: "",
+    passwordError: ""
+  });
+  const [emailIsExist, setEmailIsExist] = useState("");
+// Get all users
   const getUsers = async () => {
-    await axios.get(`http://localhost:3000/v1/users?page=${page}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
+    await axios.get(`http://localhost:3000/v1/users?page=${page}&limit=8`, { headers: { "Authorization": `Bearer ${accessToken}` } })
       .then((response) => {
         console.log(response);
         setUsers(response.data.results);
@@ -35,30 +51,44 @@ const ManageAccount = () => {
       });
   };
 
-
+// Update account
   const handleUpdateAccount = async () => {
-    const isValid = validateFields();
+    const isValid = validateFields(selectedUser);
     if (isValid) {
       await axios.patch(`http://localhost:3000/v1/users/${selectedUser.id}`,
       {
         firstName: selectedUser.firstName,
         lastName: selectedUser.lastName,
         phoneNumber: selectedUser.phoneNumber,
-        email: selectedUser.email
+        email: selectedUser.email,
+        role: selectedUser.role,
       }
     , { headers: { "Authorization": `Bearer ${accessToken}` } })
       .then((response) => {
         console.log(response);
         getUsers();
+        setModalIsOpen(false);
+        setValidationErrors({
+          firstNameError: "",
+          lastNameError: "",
+          phoneNumberError: "",
+          emailError: "",
+          passwordError: ""
+        });
       })
       .catch((error) => {
-        console.log(error);
-      });
-
-      setModalIsOpen(false);
+        if(error.response.data.message === "Email already taken"){
+          setEmailIsExist("Email already taken");
+          console.log(emailIsExist);
+        }
+        else{
+          console.log(error);
+        }
+          
+      }); 
     }
   };
-
+// Delete account
     const handleDeleteAccount = async () => {
     await axios.delete(`http://localhost:3000/v1/users/${selectedUser.id}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
       .then((response) => {
@@ -71,21 +101,75 @@ const ManageAccount = () => {
 
       setModalIsOpen(false);
     };
+// Create account
+    const handleCreateAccount = async () => {
+      console.log(newUser);
+    if(newUser.role === ""){
+      newUser.role = "admin";
+    }
+    const isValid = validateFields(newUser);
+    if (isValid) {
+      await axios.post(`http://localhost:3000/v1/users`,
+      {
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        email: newUser.email,
+        password: newUser.password,
+        role: newUser.role,
+      }
+    , { headers: { "Authorization": `Bearer ${accessToken}` } })
+      .then((response) => {
+        console.log(response);
+        getUsers();
+        setCreateModalIsOpen(false);
+        setNewUser({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          role: ""
+        });
+        setValidationErrors({});
+        setEmailIsExist("");
+      })
+      .catch((error) => {
+        if(error.response.data.message === "Email already taken"){
+          setEmailIsExist("Email already taken");
+        }
+        else{
+          console.log(error);
+        }
+          
+      });
+
+
+      
+    };
+  };
+
       // Function to validate all fields
-  const validateFields = () => {
+  const validateFields = (user) => {
     const errors = {};
-    if (!isNameValid(selectedUser.firstName)) {
-      errors.firstName = "First name should only contain letters and spaces.";
+    if (!isNameValid(user.firstName)) {
+      errors.firstNameError = "First name should only contain letters and spaces.";
     }
-    if (!isNameValid(selectedUser.lastName)) {
-      errors.lastName = "Last name should only contain letters and spaces.";
+    if (!isNameValid(user.lastName)) {
+      errors.lastNameError = "Last name should only contain letters and spaces.";
     }
-    if (!isEmailValid(selectedUser.email)) {
-      errors.email = "Invalid email format.";
+    if (!isEmailValid(user.email)) {
+      errors.emailError = "Invalid email format.";
     }
-    if (!isPhoneNumberValid(selectedUser.phoneNumber)) {
-      errors.phoneNumber = "Invalid phone number format. It should be 10 digits.";
+    if(!createModalIsOpen){
+      if (!isPhoneNumberValid(user.phoneNumber)) {
+        errors.phoneNumberError = "Invalid phone number format. It should be 10 digits.";
+      }
     }
+    if(createModalIsOpen){
+      if (!isPasswordValid(user.password)) {
+        errors.passwordError = "Password should be at least 8 characters long and contain at least one letter and one number.";
+      }
+    }
+ 
     setValidationErrors(errors);
     console.log(validationErrors);
 
@@ -103,7 +187,28 @@ const ManageAccount = () => {
 
   const handleCloseModal = () => {
     setSelectedUser(null);
+    setValidationErrors({
+      firstNameError: "",
+      lastNameError: "",
+      phoneNumberError: "",
+      emailError: "",
+      passwordError: ""
+    });
+    setEmailIsExist("");
     setModalIsOpen(false);
+  };
+
+  const handleCloseCreateModal = () => {
+    setNewUser({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      role: ""
+    });
+    setValidationErrors({});
+    setEmailIsExist("");
+    setCreateModalIsOpen(false);
   };
 
 
@@ -133,6 +238,7 @@ const ManageAccount = () => {
               <TableCell>Last Name</TableCell>
               <TableCell>Phone Number</TableCell>
               <TableCell>Email</TableCell>
+              <TableCell>Role</TableCell>
               <TableCell>Email Verification</TableCell>
               <TableCell></TableCell>
             </TableRow>
@@ -147,6 +253,7 @@ const ManageAccount = () => {
                 <TableCell>{user.lastName}</TableCell>
                 <TableCell>{user.phoneNumber}</TableCell>
                 <TableCell>{user.email}</TableCell>
+                <TableCell>{user.role}</TableCell>
                 <TableCell>
                   <div
                     className={`verification-badge ${user.verified ? "verified" : "not-verified"}`}
@@ -156,7 +263,7 @@ const ManageAccount = () => {
                 </TableCell>
                 <TableCell>
                   <Button onClick={() => handleOpen(user)}>
-                    <KeyboardArrowRightIcon />
+                    <BuildIcon />
                   </Button>
                 </TableCell>
               </TableRow>
@@ -164,6 +271,18 @@ const ManageAccount = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Button variant="success" onClick={() => {setCreateModalIsOpen(true)}}
+        style={
+          {
+            position: "absolute",
+            backgroundColor: "#4caf50",
+            color: "white",
+            marginTop: "10px",
+          }
+        }
+      >
+        Create a user
+      </Button>
       <Pagination
         count={totalPages}
         page={page}
@@ -174,9 +293,11 @@ const ManageAccount = () => {
         className="pagination"
         />
 
-      <Modal show={modalIsOpen} onHide={handleCloseModal}>
+      <Modal show={modalIsOpen} onHide={handleCloseModal} style={{
+        marginTop: "50px",
+      }}>
         <Modal.Header closeButton>
-          <Modal.Title>Update Flash Card</Modal.Title>
+          <Modal.Title>Update Account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="form-group">
@@ -188,10 +309,10 @@ const ManageAccount = () => {
               value={selectedUser?.firstName}
               onChange={(e) => setSelectedUser({ ...selectedUser, firstName: e.target.value })}
             />
-            {validationErrors.firstName && (
+            {validationErrors.firstNameError && (
               <div style={
                 {color: "red"}
-              }>{validationErrors.firstName}</div>
+              }>{validationErrors.firstNameError}</div>
             )}
           </div>
           <div className="form-group">
@@ -203,10 +324,10 @@ const ManageAccount = () => {
               value={selectedUser?.lastName}
               onChange={(e) => setSelectedUser({ ...selectedUser, lastName: e.target.value })}
             />
-            {validationErrors.lastName && (
+            {validationErrors.lastNameError && (
               <div style={
                 {color: "red"}
-              }>{validationErrors.lastName}</div>
+              }>{validationErrors.lastNameError}</div>
             )}
           </div>
           <div className="form-group">
@@ -218,10 +339,10 @@ const ManageAccount = () => {
               value={selectedUser?.phoneNumber}
               onChange={(e) => setSelectedUser({ ...selectedUser, phoneNumber: e.target.value })}
             />
-            {validationErrors.phoneNumber && (
+            {validationErrors.phoneNumberError && (
               <div style={
                 {color: "red"}
-              }>{validationErrors.phoneNumber}</div>
+              }>{validationErrors.phoneNumberError}</div>
             )}
           </div>
           <div className="form-group">
@@ -233,11 +354,30 @@ const ManageAccount = () => {
               value={selectedUser?.email}
               onChange={(e) => setSelectedUser({ ...selectedUser, email: e.target.value })}
             />
-            {validationErrors.email && (
+            {validationErrors.emailError && (
               <div style={
                 {color: "red"}
-              }>{validationErrors.email}</div>
+              }>{validationErrors.emailError}</div>
             )}
+            {emailIsExist && (
+              <div style={
+                {color: "red"}
+              }>{emailIsExist}</div>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="name">Role</label>
+            <select 
+              className="form-control"
+              id="role"
+              value={selectedUser?.role}
+              onChange={(e) => setSelectedUser({ ...selectedUser, role: e.target.value })}
+            >
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+              <option value="moderator">Moderator</option>
+              <option value="courier">Courier</option>
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="name">Email Verification</label>
@@ -260,6 +400,115 @@ const ManageAccount = () => {
             Delete
           </Button>
           <Button variant="danger" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={createModalIsOpen} onHide={handleCloseCreateModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="form-group">
+            <label htmlFor="name">First Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="firstName"
+              value={newUser.firstName}
+              onChange={(e) => setNewUser({ ...newUser, firstName: e.target.value })}
+            />
+            {validationErrors.firstNameError && (
+              <div style={
+                {color: "red"}
+              }>{validationErrors.firstNameError}</div>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="name">Last Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="lastName"
+              value={newUser.lastName}
+              onChange={(e) => setNewUser({ ...newUser, lastName: e.target.value })}
+            />
+            {validationErrors.lastNameError && (
+              <div style={
+                {color: "red"}
+              }>{validationErrors.lastNameError}</div>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="name">Email</label>
+            <input
+              type="text"
+              className="form-control"
+              id="email"
+              value={newUser.email}
+              onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+            />
+            {validationErrors.emailError && (
+              <div style={
+                {color: "red"}
+              }>{validationErrors.emailError}</div>
+            )}
+            {emailIsExist && (
+              <div style={
+                {color: "red"}
+              }>{emailIsExist}</div>
+            )}
+          </div>
+      <div className="form-group">
+            <label htmlFor="name">Password</label>
+            <input
+              type="text"
+              className="form-control"
+              id="password"
+              value={newUser.password}
+              onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+            />
+            {validationErrors.passwordError && (
+              <div style={
+                {color: "red"}
+              }>{validationErrors.passwordError}</div>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="name">Role</label>
+            <select 
+              className="form-control"
+              id="role"
+              value={newUser.role}
+              onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+            >
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+              <option value="moderator">Moderator</option>
+              <option value="courier">Courier</option>
+            </select>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleCreateAccount}
+            style={
+              {
+                backgroundColor: "#4caf50",
+                color: "white",
+                marginRight: "10px",
+              }
+            }
+          >
+            Create
+          </Button>
+          <Button variant="danger" onClick={() => {setCreateModalIsOpen(false)}}
+            style={
+              {
+                backgroundColor: "#f44336",
+                color: "white",
+              }
+            }
+          >
             Close
           </Button>
         </Modal.Footer>

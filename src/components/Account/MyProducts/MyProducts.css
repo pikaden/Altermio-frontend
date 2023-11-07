@@ -1,0 +1,45 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form>input {
+  width: 100%;
+}
+
+.separator__line {
+  height: 1px;
+  background-color: #ccc;
+  margin: 1rem 0;
+}
+
+.form {
+  border: 1px solid #ccc;
+  padding: 1rem;
+}
+
+.verification-badge {
+  border-radius: 5px;
+  padding: 5px;
+  text-align: center;
+}
+
+.verification-badge.pending {
+  border: 2px solid blue;
+  color: blue;
+}
+
+.verification-badge.verified {
+  border: 2px solid green;
+  color: green;
+}
+
+.verification-badge.not-verified {
+  border: 2px solid red;
+  color: red;
+}
+
+/* #standard-basic {
+    width: 100%;
+  } */

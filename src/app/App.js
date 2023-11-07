@@ -27,6 +27,11 @@ import ModeratorPage from "../components/Roles/Moderator/ModeratorPage";
 import CourierPage from "../components/Roles/Courier/CourierPage";
 import ContactUs from "../components/Nav/ContactUs/ContactUs";
 import AboutUs from "../components/Nav/AboutUs/AboutUs";
+import Chatpage from "../components/Pages/Chatpage";
+import ChatLayout from "../components/layouts/ChatLayout";
+import PostProduct from "../components/Nav/PostProduct/PostProduct";
+import MyProducts from "../components/Account/MyProducts/MyProducts";
+import ManageMyProducts from "../components/Account/ManageMyProducts/ManageMyProducts";
 import UserView from "../routes/UserView";
 
 function App() {
@@ -42,6 +47,12 @@ function App() {
           <Route path="/moderator" element={<ModeratorPage />} />
           <Route path="/*" element={<ModeratorPage />} />
         </Route>
+        
+        <Route path="/account">
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="*" element={<Login />} />
+        </Route>
 
         <Route element={<UserLayout />}>
           <Route index element={<Home />} />
@@ -50,7 +61,6 @@ function App() {
             <Route path="manage" element={<ManageAccount />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route path=":id" element={<UserView />} />
             <Route path="*" element={<Login />} />
           </Route>
 
@@ -59,6 +69,12 @@ function App() {
             <Route path=":id" element={<CategoryView />} />
           </Route>
 
+          <Route path="/products">
+            <Route path="create" element={<PostProduct />}/>
+            <Route path="manage/:productId" element={<ManageMyProducts />} />
+            <Route path="me" element={<MyProducts />} />
+          </Route>
+          
           <Route path="/item">
             <Route path="/item/">
               <Route path=":id" element={<ItemView />} />
@@ -83,6 +99,11 @@ function App() {
 
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/about" element={<AboutUs />} />
+
+        </Route>
+
+        <Route element={<ChatLayout />} >
+          <Route path="/chats" element={<Chatpage />} />
         </Route>
 
         <Route element={<CourierLayout />}>

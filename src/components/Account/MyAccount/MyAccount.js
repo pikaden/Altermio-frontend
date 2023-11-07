@@ -51,7 +51,7 @@ const MyAccount = () => {
           </div>
           <div className="account__holder__email">{res.email}</div>
           <div className="manage__account__action">
-            <Link to="/account/manage">Manage account</Link>
+            <Link to="/products/me?page=1">Manage products</Link>
           </div>
         </div>
       </div>
