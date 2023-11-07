@@ -30,6 +30,8 @@ import AboutUs from "../components/Nav/AboutUs/AboutUs";
 import Chatpage from "../components/Pages/Chatpage";
 import ChatLayout from "../components/layouts/ChatLayout";
 import PostProduct from "../components/Nav/PostProduct/PostProduct";
+import MyProducts from "../components/Account/MyProducts/MyProducts";
+import ManageMyProducts from "../components/Account/ManageMyProducts/ManageMyProducts";
 
 function App() {
   return (
@@ -62,7 +64,12 @@ function App() {
           <Route path="/category">
             <Route path=":id" element={<CategoryView />} />
           </Route>
-          <Route path="/products/create" element={<PostProduct />} />
+
+          <Route path="/products">
+            <Route path="create" element={<PostProduct />}/>
+            <Route path="manage/:productId" element={<ManageMyProducts />} />
+            <Route path="me" element={<MyProducts />} />
+          </Route>
           
           <Route path="/item">
             <Route path="/item/">
