@@ -28,7 +28,7 @@ const ProductCarousel = (props) => {
         {props.item.images.length !== 0 &&
           <Carousel variant="dark" interval={4000} pause={'hover'}>
             {props.item.images.map(imageId => (
-              <Carousel.Item>
+              <Carousel.Item key={imageId}>
                 <ProductCarouselImage image={imageId} />
               </Carousel.Item>
             ))}

@@ -5,6 +5,7 @@ import Detail from './Detail/Detail';
 import './Item.css';
 import Related from './Related/Related';
 import { Button } from '@mui/material';
+import ShopPage from './ShopPage/ShopPage';
 
 const Item = (props) => {
     return (
@@ -15,6 +16,9 @@ const Item = (props) => {
             </div>
             <div className="item__description__container">
                 <Description item={props.item} />
+            </div>
+            <div className="item__description__container">
+                <ShopPage item={props.item} />
             </div>
             <div className="related__items__container">
                 <Related item={props.item} />

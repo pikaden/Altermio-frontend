@@ -58,6 +58,7 @@ const MyProducts = () => {
               <TableCell>Price</TableCell>
               <TableCell>State</TableCell>
               <TableCell>Brand</TableCell>
+              <TableCell>Disabled</TableCell>
               <TableCell>Verification</TableCell>
             </TableRow>
           </TableHead>
@@ -73,6 +74,17 @@ const MyProducts = () => {
                   <TableCell>{product.price}</TableCell>
                   <TableCell>{product.state}</TableCell>
                   <TableCell>{product.brand}</TableCell>
+                  <TableCell>
+                    {product.activate === 'accept' ?
+                      <div className={`verification-badge verified`}>
+                        No
+                      </div>
+                      :
+                      <div className={`verification-badge not-verified`}>
+                        Yes
+                      </div>
+                    }
+                  </TableCell>
                   <TableCell>
                     {product.verify === 'pending' ?
                       <div className={`verification-badge pending`}>
