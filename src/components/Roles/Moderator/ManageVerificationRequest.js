@@ -13,50 +13,26 @@ function ManageVerificationRequest() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedproduct, setSelectedproduct] = useState(null);
   const [products, setProducts] = useState([]);
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
   let accessToken = localStorage.getItem("accessToken");
 
-
   const getProducts = async () => {
-   await axios.get(`http://localhost:3000/v1/products/manageProducts/all?verify=deny&page=${page}`, {headers: {"Authorization" : `Bearer ${accessToken}`} }).then((response) => {
-      
+    await axios.get(`http://localhost:3000/v1/products/manageProducts/all?verify=pending&page=${page}&limit=8 `, { headers: { "Authorization": `Bearer ${accessToken}` } }).then((response) => {
+
       console.log(response);
       setProducts(response.data.results);
+      setTotalPages(response.data.totalPages);
     })
-    .catch((error) => {
-      console.log(error);
-    });
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-
-  // const handleUpdateProduct = async () => {
-  //   console.log(accessToken);
-  //   await axios.put(`http://localhost:3000/v1/products/${selectedproduct.id}`,
-  //     {
-  //       name: selectedproduct.name,
-  //       category: selectedproduct.category,
-  //       price: selectedproduct.price,
-  //       description: selectedproduct.description,
-  //       state: selectedproduct.state,
-  //       brand: selectedproduct.brand
-  //     }
-  //   , { headers: { "Authorization": `Bearer ${accessToken}` ,access_token : accessToken}})
-  //     .then((response) => {
-  //       console.log(response);
-  //       getProducts();
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-
-  //     setModalIsOpen(false);handleVerifyProduct
-  // };
-
   const handleVerifyProduct = async () => {
-    await axios.put(`http://localhost:3000/v1/products/manageVerifyProducts/${selectedproduct.id}/accept`,{
+    await axios.put(`http://localhost:3000/v1/products/manageVerifyProducts/${selectedproduct.id}/accept`, {
       type: "accept"
-    },{ headers: { "Authorization": `Bearer ${accessToken}`} })
+    }, { headers: { "Authorization": `Bearer ${accessToken}` } })
       .then((response) => {
         console.log(response);
         getProducts();
@@ -65,7 +41,22 @@ function ManageVerificationRequest() {
         console.log(error);
       });
 
-      setModalIsOpen(false);
+    setModalIsOpen(false);
+  };
+
+  const handleDenyVerifyProduct = async () => {
+    await axios.patch(`http://localhost:3000/v1/products/manageVerifyProducts/${selectedproduct.id}/deny`,
+      {},
+      { headers: { "Authorization": `Bearer ${accessToken}` } })
+      .then((response) => {
+        console.log(response);
+        getProducts();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setModalIsOpen(false);
   };
 
   const isModalOpen = () => {
@@ -86,24 +77,24 @@ function ManageVerificationRequest() {
 
 
   const handlePageChange = (event, value) => {
-    setPage(value); 
-    console.log(page);    
-};
+    setPage(value);
+    console.log(page);
+  };
 
   useEffect(() => {
     getProducts();
   }, [page]);
 
   return (
-    <Box height={100}> 
+    <Box height={100}>
       <TableContainer
-      sx={
-        {
-          borderRadius: 2,
-          boxShadow: 2,
-          overflow: "hidden"
-        }
-      }>
+        sx={
+          {
+            borderRadius: 2,
+            boxShadow: 2,
+            overflow: "hidden"
+          }
+        }>
         <Table>
           <TableHead>
             <TableRow>
@@ -128,17 +119,14 @@ function ManageVerificationRequest() {
                 <TableCell>{product.state}</TableCell>
                 <TableCell>{product.brand}</TableCell>
                 <TableCell>
-                <div
-                    className={`verification-badge ${product.activate === 'pending' ? "inactive" : "active"}`}
-                  >
+                  <div className={`verification-badge ${product.activate === 'pending' ? "inactive" : "active"}`}>
                     {product.activate === 'pending' ? "Inactive" : "Active"}
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div
-                    className={`verification-badge ${product.verify === 'accept' ? "verified" : "not-verified"}`}
-                  >
-                    {product.verify === 'accept' ? "Verified" : "Not Verified"}
+                  {/* moderator only show pending request */}
+                  <div className={`verification-badge pending`}>
+                    Pending
                   </div>
                 </TableCell>
                 <TableCell>
@@ -159,107 +147,111 @@ function ManageVerificationRequest() {
         showFirstButton
         showLastButton
         className="pagination"
-        />
-      <Modal show={modalIsOpen} onHide={handleCloseModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Delete Product</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Product Name
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedproduct?.name}
-                                onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, name: e.target.value });
-                                }}
-                                
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Category
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedproduct?.category}
-                                onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, category: e.target.value });
-                                }}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Price
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedproduct?.price}
-                                onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, price: e.target.value });
-                                }}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Description
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedproduct?.description}
-                                onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, description: e.target.value });
-                                }}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Verification
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                defaultValue={selectedproduct?.verify ? "Verified" : "Not-verified"}
-                                onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, verify: e.target.value });
-                                }}
-                            />
-                        </div>
-                        <div className="row" style={{ marginBottom: '1rem' }}>
-                            <label className="col-md-4" htmlFor="backHTML">
-                                Brand
-                            </label>
-                            <input
-                                className="col-md-8 textArea"
-                                type="text"
-                                id="backHTML"
-                                value={selectedproduct?.brand}
-                                onChange={(e) => {
-                                    setSelectedproduct({ ...selectedproduct, brand: e.target.value });
-                                }}
-                            />
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="success" onClick={handleVerifyProduct}>
-                            Verify
-                        </Button>
-                        <Button variant="danger" onClick={handleCloseModal}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+      />
+      <Modal show={modalIsOpen} onHide={handleCloseModal}
+        style={{
+          marginTop: "50px",
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Manage Verification Request</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <label className="col-md-4" htmlFor="backHTML">
+              Product Name
+            </label>
+            <input
+              className="col-md-8 textArea"
+              type="text"
+              id="backHTML"
+              value={selectedproduct?.name}
+              onChange={(e) => {
+                setSelectedproduct({ ...selectedproduct, name: e.target.value });
+              }}
+
+            />
+          </div>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <label className="col-md-4" htmlFor="backHTML">
+              Category
+            </label>
+            <input
+              className="col-md-8 textArea"
+              type="text"
+              id="backHTML"
+              value={selectedproduct?.category}
+              onChange={(e) => {
+                setSelectedproduct({ ...selectedproduct, category: e.target.value });
+              }}
+            />
+          </div>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <label className="col-md-4" htmlFor="backHTML">
+              Price
+            </label>
+            <input
+              className="col-md-8 textArea"
+              type="text"
+              id="backHTML"
+              value={selectedproduct?.price}
+              onChange={(e) => {
+                setSelectedproduct({ ...selectedproduct, price: e.target.value });
+              }}
+            />
+          </div>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <label className="col-md-4" htmlFor="backHTML">
+              Description
+            </label>
+            <input
+              className="col-md-8 textArea"
+              type="text"
+              id="backHTML"
+              value={selectedproduct?.description}
+              onChange={(e) => {
+                setSelectedproduct({ ...selectedproduct, description: e.target.value });
+              }}
+            />
+          </div>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <label className="col-md-4" htmlFor="backHTML">
+              Verification
+            </label>
+            <input
+              className="col-md-8 textArea"
+              type="text"
+              id="backHTML"
+              defaultValue={'Pending'}
+              onChange={(e) => {
+                setSelectedproduct({ ...selectedproduct, verify: e.target.value });
+              }}
+            />
+          </div>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <label className="col-md-4" htmlFor="backHTML">
+              Brand
+            </label>
+            <input
+              className="col-md-8 textArea"
+              type="text"
+              id="backHTML"
+              value={selectedproduct?.brand}
+              onChange={(e) => {
+                setSelectedproduct({ ...selectedproduct, brand: e.target.value });
+              }}
+            />
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleVerifyProduct}>
+            Accept Verification
+          </Button>
+          <Button variant="danger" onClick={handleDenyVerifyProduct}>
+            Deny
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Box>
   );
 }

@@ -47,7 +47,7 @@ function App() {
           <Route path="/moderator" element={<ModeratorPage />} />
           <Route path="/*" element={<ModeratorPage />} />
         </Route>
-
+        
         <Route path="/account">
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
@@ -59,6 +59,8 @@ function App() {
           <Route path="/account">
             <Route path="me" element={<MyAccount />} />
             <Route path="manage" element={<ManageAccount />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
             <Route path=":id" element={<UserView />} />
             <Route path="*" element={<Login />} />
           </Route>
@@ -68,6 +70,12 @@ function App() {
             <Route path=":id" element={<CategoryView />} />
           </Route>
 
+          <Route path="/products">
+            <Route path="create" element={<PostProduct />}/>
+            <Route path="manage/:productId" element={<ManageMyProducts />} />
+            <Route path="me" element={<MyProducts />} />
+          </Route>
+          
           <Route path="/item">
             <Route path="/item/">
               <Route path=":id" element={<ItemView />} />
@@ -92,6 +100,11 @@ function App() {
 
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/about" element={<AboutUs />} />
+
+        </Route>
+
+        <Route element={<ChatLayout />} >
+          <Route path="/chats" element={<Chatpage />} />
         </Route>
 
         <Route element={<CourierLayout />}>

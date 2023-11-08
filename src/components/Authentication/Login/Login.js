@@ -29,17 +29,16 @@ export default function Login() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    await axios
-      .post(`http://localhost:3000/v1/auth/login/`, {
-        email: data.get("email"),
-        password: data.get("password"),
-      })
-      .then((res) => {
+    await axios.post(`http://localhost:3000/v1/auth/login/`, {
+      email: data.get('email'),
+      password: data.get('password'),
+    })
+      .then(res => {
         console.log(res);
         const accessToken = res.data.tokens.access.token;
-        const refreshToken = res.data.tokens.refresh;
+        const refreshToken = res.data.tokens.refresh.token;
         const userRole = res.data.user.role;
-
+        
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
         localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -146,7 +145,7 @@ export default function Login() {
                   </Link>
                 </Grid>
                 <Grid>
-                  <Link href="#" variant="body2" onClick={() => {navigate("/account/register")}}>
+                  <Link href="#" variant="body2" onClick={() => { navigate("/account/register") }}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

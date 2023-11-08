@@ -22,10 +22,14 @@ import DocumentIcon from '@mui/icons-material/Description';
 import PeopleIcon from '@mui/icons-material/People';
 import InvetoryIcon from '@mui/icons-material/Inventory';
 import ReportIcon from '@mui/icons-material/Report';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import Dashboard from './Dashboard';
 import ManageVerificationRequest from './ManageVerificationRequest';
 import ManageReportedComment from './ManageReportedComment';
 import { Title } from '@mui/icons-material';
+import { useNavigate } from "react-router-dom";
+import { Button, MenuItem, Menu } from "@mui/material";
 
 
 
@@ -98,9 +102,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Admin() {
+  const pages = ["Logout"];
   const theme = useTheme();
   const [open, setOpen] = useState(true);
   const [menudata, setMenudata] = useState("Dashboard");
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const navigate = useNavigate();
 
 
   const handleDrawerOpen = () => {
@@ -111,10 +118,24 @@ export default function Admin() {
     setOpen(false);
   };
 
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/account/login");
+    console.log("logout");
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      {/* <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -123,7 +144,7 @@ export default function Admin() {
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: 'none' }),
+              ...(open && { display: "none" }),
             }}
           >
             <MenuIcon />
@@ -131,8 +152,58 @@ export default function Admin() {
           <Typography variant="h6" noWrap component="div">
             {menudata}
           </Typography>
+          <Box sx={{ flexGrow: 1,
+            display: "flex",
+            justifyContent: "flex-end",
+          }}>
+            <Button
+              id="fade-button"
+              aria-controls={open ? "fade-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleOpenNavMenu}
+              sx={{
+                color: "black",
+              }}
+            >
+              <PersonOutlineIcon
+                color="black"
+                size="large"
+                sx={{ width: "35px",
+                      height: "35px",
+                      marginRight: 2,
+                      border: "1px solid black", 
+                      borderRadius: "50%", 
+              }}
+              />
+            </Button>
+            <Menu
+              id="fade-menu"
+              MenuListProps={{
+                "aria-labelledby": "fade-button",
+              }}
+              anchorEl={anchorElNav}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+            >
+              {pages.map((page) => (
+                [
+                  <MenuItem
+                  onClick={() => {
+                    if (page === "Logout") {
+                      handleLogout();
+                    }
+                  }}
+                >
+                  {page}
+                </MenuItem>
+                ]
+
+              ))}
+            </Menu>
+          </Box>
         </Toolbar>
-      </AppBar> */}
+      </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
@@ -166,70 +237,10 @@ export default function Admin() {
               </ListItemButton>
             </ListItem>
           ))}
-            {/* <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setMenudata("Request refund")}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                 <DocumentIcon />
-                </ListItemIcon>
-                <ListItemText primary="Request refund" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={() =>setMenudata("Accounts")}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                 <PeopleIcon />
-                </ListItemIcon>
-                <ListItemText primary="Accounts" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={() =>setMenudata("Products")}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                 <InvetoryIcon />
-                </ListItemIcon>
-                <ListItemText primary="Products" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem> */}
         </List>
         <Divider/>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, paddingTop: 10 }}>
           {menudata === "Dashboard" && <Dashboard/>}       
           {menudata === "Verification Request" && <ManageVerificationRequest/>}
           {menudata === "Reported Comment" && <ManageReportedComment/>}

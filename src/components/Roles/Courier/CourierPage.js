@@ -21,9 +21,12 @@ import HomeIcon from '@mui/icons-material/Home';
 import DocumentIcon from '@mui/icons-material/Description';
 import PeopleIcon from '@mui/icons-material/People';
 import InvetoryIcon from '@mui/icons-material/Inventory';
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import Dashboard from './Dashboard';
 import ManageSendProduct from './ManageSendProduct';
-import { Title } from '@mui/icons-material';
+import { useNavigate } from "react-router-dom";
+import { Title} from '@mui/icons-material';
+import { Button, MenuItem, Menu } from "@mui/material";
 
 
 
@@ -96,9 +99,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Admin() {
+  const pages = ["Logout"];
   const theme = useTheme();
   const [open, setOpen] = useState(true);
   const [menudata, setMenudata] = useState("Dashboard");
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const navigate = useNavigate();
 
 
   const handleDrawerOpen = () => {
@@ -107,6 +113,20 @@ export default function Admin() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/account/login");
+    console.log("logout");
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
   };
 
   return (
@@ -121,7 +141,7 @@ export default function Admin() {
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: 'none' }),
+              ...(open && { display: "none" }),
             }}
           >
             <MenuIcon />
@@ -129,6 +149,56 @@ export default function Admin() {
           <Typography variant="h6" noWrap component="div">
             {menudata}
           </Typography>
+          <Box sx={{ flexGrow: 1,
+            display: "flex",
+            justifyContent: "flex-end",
+          }}>
+            <Button
+              id="fade-button"
+              aria-controls={open ? "fade-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleOpenNavMenu}
+              sx={{
+                color: "black",
+              }}
+            >
+              <PersonOutlineIcon
+                color="black"
+                size="large"
+                sx={{ width: "35px",
+                      height: "35px",
+                      marginRight: 2,
+                      border: "1px solid black", 
+                      borderRadius: "50%", 
+              }}
+              />
+            </Button>
+            <Menu
+              id="fade-menu"
+              MenuListProps={{
+                "aria-labelledby": "fade-button",
+              }}
+              anchorEl={anchorElNav}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+            >
+              {pages.map((page) => (
+                [
+                  <MenuItem
+                  onClick={() => {
+                    if (page === "Logout") {
+                      handleLogout();
+                    }
+                  }}
+                >
+                  {page}
+                </MenuItem>
+                ]
+
+              ))}
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
