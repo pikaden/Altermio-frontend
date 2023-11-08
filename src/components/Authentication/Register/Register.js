@@ -146,7 +146,7 @@ export default function Register() {
       event.preventDefault();
       return;
     }
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(email)) {  
       alert("Email is not valid");
       event.preventDefault();
       return;
@@ -259,6 +259,7 @@ export default function Register() {
                   name="phoneNumber"
                   label="Phone Number"
                   id="phoneNumber"
+                  type="number"
                 />
               </Grid>
               <Grid item xs={6}>

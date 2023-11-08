@@ -3,10 +3,16 @@ import Account from "../Account";
 import "./ManageAccount.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, FormControl, MenuItem, Select, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 
 const ManageAccount = () => {
-  const navigate = useNavigate();
   let accessToken = localStorage.getItem("accessToken");
 
   const [coin, setCoin] = useState({
@@ -28,27 +34,21 @@ const ManageAccount = () => {
 
   useEffect(() => {
     const getUserInformation = async () => {
-      const response = await axios.get(
-        `http://localhost:3000/v1/users/me/profile`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            access_token: accessToken,
-          },
-        }
-      );
+      const response = await axios.get(`http://localhost:3000/v1/users/me/profile`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          access_token: accessToken,
+        },
+      });
       setRes(response.data);
     };
     const getUserWallet = async () => {
-      const response = await axios.get(
-        `http://localhost:3000/v1/wallets/payment`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            access_token: accessToken,
-          },
-        }
-      );
+      const response = await axios.get(`http://localhost:3000/v1/wallets/payment`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          access_token: accessToken,
+        },
+      });
       setCoin(response.data);
     };
     getUserInformation();
@@ -79,6 +79,11 @@ const ManageAccount = () => {
   };
 
   const handleUpdateUser = async () => {
+    const phoneNumber = res.phoneNumber;
+    if (!/^(0[0-9]{9,11})\b/.test(phoneNumber)) {
+      alert("Phone Number is not Valid");
+      return;
+    }
     await axios
       .patch(
         `http://localhost:3000/v1/users/me/profile`,
@@ -87,7 +92,7 @@ const ManageAccount = () => {
           email: res.email,
           firstName: res.firstName,
           lastName: res.lastName,
-          phoneNumber: res.phoneNumber,
+          phoneNumber: phoneNumber,
         },
         {
           headers: {
@@ -212,9 +217,11 @@ const ManageAccount = () => {
             id="demo-simple-select"
             label="Bank Code"
             value={"NCB"}
-            onChange={(e) => setAddCoin({
-              bankCode: e.target.value
-            })}
+            onChange={(e) =>
+              setAddCoin({
+                bankCode: e.target.value,
+              })
+            }
           >
             <MenuItem value={"NCB"}>NCB</MenuItem>
             {/* <MenuItem value={"TPBANK"}>TPBANK</MenuItem>

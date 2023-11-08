@@ -32,6 +32,7 @@ import ChatLayout from "../components/layouts/ChatLayout";
 import PostProduct from "../components/Nav/PostProduct/PostProduct";
 import MyProducts from "../components/Account/MyProducts/MyProducts";
 import ManageMyProducts from "../components/Account/ManageMyProducts/ManageMyProducts";
+import UserView from "../routes/UserView";
 
 function App() {
   return (
@@ -58,6 +59,8 @@ function App() {
           <Route path="/account">
             <Route path="me" element={<MyAccount />} />
             <Route path="manage" element={<ManageAccount />} />
+            <Route path=":id" element={<UserView />} />
+            <Route path="*" element={<Login />} />
           </Route>
 
           <Route path="/shop" element={<Shop />} />
