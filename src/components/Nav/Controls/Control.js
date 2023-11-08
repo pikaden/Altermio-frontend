@@ -22,16 +22,16 @@ const Control = () => {
                 <div className="control">
                     <FadeMenu />
                 </div>
-                <div className="control">
+                {/* <div className="control">
                     <NotificationMenu />
-                </div>
-                <div className="control">
+                </div> */}
+                {/* <div className="control">
                     <Link to="/wishlist">
                         <Badge badgeContent={wishItems.items.length} color="error">
                             <FavoriteBorderIcon color="black" sx={{ width: '35px'}}/>
                         </Badge>
                     </Link>
-                </div>
+                </div> */}
                 <div className="control">
                     <Cart />
                 </div>
