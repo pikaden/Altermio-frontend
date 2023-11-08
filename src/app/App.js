@@ -30,6 +30,7 @@ import AboutUs from "../components/Nav/AboutUs/AboutUs";
 import Chatpage from "../components/Pages/Chatpage";
 import ChatLayout from "../components/layouts/ChatLayout";
 import PostProduct from "../components/Nav/PostProduct/PostProduct";
+import CreateOrder from "../components/order/CreateOrder";
 import MyProducts from "../components/Account/MyProducts/MyProducts";
 import ManageMyProducts from "../components/Account/ManageMyProducts/ManageMyProducts";
 
@@ -64,7 +65,7 @@ function App() {
           <Route path="/category">
             <Route path=":id" element={<CategoryView />} />
           </Route>
-
+        
           <Route path="/products">
             <Route path="create" element={<PostProduct />}/>
             <Route path="manage/:productId" element={<ManageMyProducts />} />
@@ -89,6 +90,8 @@ function App() {
               <Route path=":id" element={<ItemView />} />
             </Route>
           </Route>
+          
+          <Route path="/createOrder" element={<CreateOrder />} />
 
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/search/*" element={<SearchView />} />

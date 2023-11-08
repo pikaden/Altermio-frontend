@@ -24,6 +24,11 @@ const CartItemsProvider = (props) => {
         setTotalAmountOfItems(total)
     }
 
+    const clearAll = () => {
+        setCartItems([]); 
+        setTotalAmountOfItems(0); 
+      };
+
     useEffect(() => {
         calculateTotalAmount(cartItems)
     }, [cartItems])
@@ -32,7 +37,8 @@ const CartItemsProvider = (props) => {
         items: cartItems,
         totalAmount: totalAmountOfItems,
         addItem: addToCartHandler,
-        removeItem: removeFromCartHandler
+        removeItem: removeFromCartHandler,
+        clearAll: clearAll
     }
 
     return (
