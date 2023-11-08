@@ -125,7 +125,6 @@ export default function Register() {
     const email = data.get("email");
     const firstName = data.get("firstName");
     const lastName = data.get("lastName");
-    const phoneNumber = data.get("phoneNumber");
     handleEmail(email);
     if (numberOrSpecialCharacterRegex.test(firstName)) {
       alert("First name is not valid with number, special character");
@@ -149,11 +148,6 @@ export default function Register() {
     }
     if (!emailRegex.test(email)) {  
       alert("Email is not valid");
-      event.preventDefault();
-      return;
-    }
-    if (!/^(0[0-9]{9,11})\b/.test(phoneNumber)) {
-      alert("Phone Number is not valid and it's need to be in range 10-11 numbers with 0");
       event.preventDefault();
       return;
     }
@@ -265,6 +259,7 @@ export default function Register() {
                   name="phoneNumber"
                   label="Phone Number"
                   id="phoneNumber"
+                  type="number"
                 />
               </Grid>
               <Grid item xs={6}>

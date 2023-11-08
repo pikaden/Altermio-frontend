@@ -27,6 +27,11 @@ import ModeratorPage from "../components/Roles/Moderator/ModeratorPage";
 import CourierPage from "../components/Roles/Courier/CourierPage";
 import ContactUs from "../components/Nav/ContactUs/ContactUs";
 import AboutUs from "../components/Nav/AboutUs/AboutUs";
+import Chatpage from "../components/Pages/Chatpage";
+import ChatLayout from "../components/layouts/ChatLayout";
+import PostProduct from "../components/Nav/PostProduct/PostProduct";
+import MyProducts from "../components/Account/MyProducts/MyProducts";
+import ManageMyProducts from "../components/Account/ManageMyProducts/ManageMyProducts";
 import UserView from "../routes/UserView";
 
 function App() {
@@ -43,13 +48,17 @@ function App() {
           <Route path="/*" element={<ModeratorPage />} />
         </Route>
 
+        <Route path="/account">
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="*" element={<Login />} />
+        </Route>
+
         <Route element={<UserLayout />}>
           <Route index element={<Home />} />
           <Route path="/account">
             <Route path="me" element={<MyAccount />} />
             <Route path="manage" element={<ManageAccount />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
             <Route path=":id" element={<UserView />} />
             <Route path="*" element={<Login />} />
           </Route>

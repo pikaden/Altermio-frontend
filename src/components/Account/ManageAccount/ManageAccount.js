@@ -13,8 +13,6 @@ import {
 } from "@mui/material";
 
 const ManageAccount = () => {
-  const navigate = useNavigate();
-  const BASEURL = "http://localhost:3000/v1/";
   let accessToken = localStorage.getItem("accessToken");
 
   const [coin, setCoin] = useState({
@@ -36,7 +34,7 @@ const ManageAccount = () => {
 
   useEffect(() => {
     const getUserInformation = async () => {
-      const response = await axios.get(`${BASEURL}users/me/profile`, {
+      const response = await axios.get(`http://localhost:3000/v1/users/me/profile`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           access_token: accessToken,
@@ -45,7 +43,7 @@ const ManageAccount = () => {
       setRes(response.data);
     };
     const getUserWallet = async () => {
-      const response = await axios.get(`${BASEURL}wallets/payment`, {
+      const response = await axios.get(`http://localhost:3000/v1/wallets/payment`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           access_token: accessToken,
@@ -59,7 +57,7 @@ const ManageAccount = () => {
   const handleAddCoin = async () => {
     await axios
       .post(
-        `${BASEURL}wallets/payment`,
+        `http://localhost:3000/v1/wallets/payment`,
         {
           amount: addCoin.amount,
           bankCode: "NCB",
@@ -88,7 +86,7 @@ const ManageAccount = () => {
     }
     await axios
       .patch(
-        `${BASEURL}users/me/profile`,
+        `http://localhost:3000/v1/users/me/profile`,
         {
           address: res.address,
           email: res.email,
