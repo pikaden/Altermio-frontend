@@ -30,6 +30,7 @@ import ManageReportedComment from './ManageReportedComment';
 import { Title } from '@mui/icons-material';
 import { useNavigate } from "react-router-dom";
 import { Button, MenuItem, Menu } from "@mui/material";
+import ManageReportedProduct from './ManageReportedProduct/ManageReportedProduct';
 
 
 
@@ -152,7 +153,8 @@ export default function Admin() {
           <Typography variant="h6" noWrap component="div">
             {menudata}
           </Typography>
-          <Box sx={{ flexGrow: 1,
+          <Box sx={{
+            flexGrow: 1,
             display: "flex",
             justifyContent: "flex-end",
           }}>
@@ -169,12 +171,13 @@ export default function Admin() {
               <PersonOutlineIcon
                 color="black"
                 size="large"
-                sx={{ width: "35px",
-                      height: "35px",
-                      marginRight: 2,
-                      border: "1px solid black", 
-                      borderRadius: "50%", 
-              }}
+                sx={{
+                  width: "35px",
+                  height: "35px",
+                  marginRight: 2,
+                  border: "1px solid black",
+                  borderRadius: "50%",
+                }}
               />
             </Button>
             <Menu
@@ -189,14 +192,14 @@ export default function Admin() {
               {pages.map((page) => (
                 [
                   <MenuItem
-                  onClick={() => {
-                    if (page === "Logout") {
-                      handleLogout();
-                    }
-                  }}
-                >
-                  {page}
-                </MenuItem>
+                    onClick={() => {
+                      if (page === "Logout") {
+                        handleLogout();
+                      }
+                    }}
+                  >
+                    {page}
+                  </MenuItem>
                 ]
 
               ))}
@@ -212,7 +215,7 @@ export default function Admin() {
         </DrawerHeader>
         <Divider />
         <List>
-        {['Dashboard', 'Verification Request', 'Reported Comment'].map((text, index) => (
+          {['Dashboard', 'Verification Request', 'Reported Comment', 'Reported Product'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => {
               setMenudata(text)
               console.log(text)
@@ -238,12 +241,13 @@ export default function Admin() {
             </ListItem>
           ))}
         </List>
-        <Divider/>
+        <Divider />
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, paddingTop: 10 }}>
-          {menudata === "Dashboard" && <Dashboard/>}       
-          {menudata === "Verification Request" && <ManageVerificationRequest/>}
-          {menudata === "Reported Comment" && <ManageReportedComment/>}
+        {menudata === "Dashboard" && <Dashboard />}
+        {menudata === "Verification Request" && <ManageVerificationRequest />}
+        {menudata === "Reported Comment" && <ManageReportedComment />}
+        {menudata === "Reported Product" && <ManageReportedProduct />}
       </Box>
     </Box>
   );

@@ -39,19 +39,27 @@ const ShopPage = (props) => {
             <div className="description__specifics__container">
                 <div className="description__specifics">
                     <div className="left-section">
-                        <Avatar src={imageUrl} alt="item" className="item__image" />
+                        <Avatar
+                            src={imageUrl}
+                            style={{
+                                height: '5rem',
+                                width: '5rem'
+                            }}
+                            alt="item"
+                            className="item__image"
+                        />
                     </div>
                     <div className="right-section">
                         <div className="name">
                             {`${props.item.sellerId.firstName} ${props.item.sellerId.lastName}`}
                         </div>
-                        {/* TODO: chat with shop owner, shop owner profile */}
+                        {/* TODO: chat with shop owner */}
                         <div className='button-container'>
                             <Button
                                 color='success'
                                 variant='outlined'
                                 component={Link}
-                                to="/account/login"
+                                to={`/account/${props.item.sellerId.id}`}
                             >
                                 Shop profile
                             </Button>
