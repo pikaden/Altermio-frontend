@@ -6,12 +6,13 @@ import { IconButton } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { defaultImage } from '../../../Context/DefaultImage';
 
 const ItemCard = (props) => {
     const cartItemsContext = useContext(CartItemsContext)
     const [imageUrl, setImageUrl] = useState();
 
-    const defaultImageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOiEN99uJPX37lOwqYmPy_xs5z8auvTFOANdR7jaxOuA-ItMB8MGPXO45zTpEbZJ_jnvw&usqp=CAU';
+    const defaultImageUrl = defaultImage;
 
     const handleAddToCart = () => {
         cartItemsContext.addItem(props.item, 1)

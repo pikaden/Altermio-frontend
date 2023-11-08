@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, TableCell, TableContainer, Table, TableHead, TableRow, TableBody } from "@mui/material";
+import { Box, Button, TableCell, TableContainer, Table, TableHead, TableRow, TableBody, Pagination } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import Modal from "react-bootstrap/Modal";
@@ -13,9 +13,8 @@ function ManageReportedComment() {
   const [reportedComments, setreportedComments] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const reportedCommentsPerPage = 8;
-  const pageCount = Math.ceil(reportedComments.length / reportedCommentsPerPage);
-
-
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
 
   let accessToken = localStorage.getItem("accessToken");
 
@@ -59,7 +58,7 @@ function ManageReportedComment() {
         console.log(error);
       });
 
-      setModalIsOpen(false);
+    setModalIsOpen(false);
   };
 
 
@@ -76,23 +75,25 @@ function ManageReportedComment() {
   const offset = currentPage * reportedCommentsPerPage;
   const currentPagereportedComments = reportedComments.slice(offset, offset + reportedCommentsPerPage);
 
-  const handlePageClick = (data) => {
-    const selectedPage = data.selected;
-    setCurrentPage(selectedPage);
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    console.log(page);
   };
+
   useEffect(() => {
     getReportedComments();
   }, []);
+
   return (
     <Box height={100}>
       <TableContainer
-      sx={
-        {
-          borderRadius: 2,
-          boxShadow: 2,
-          overflow: "hidden"
-        }
-      }>
+        sx={
+          {
+            borderRadius: 2,
+            boxShadow: 2,
+            overflow: "hidden"
+          }
+        }>
         <Table>
           <TableHead>
             <TableRow>
@@ -112,13 +113,13 @@ function ManageReportedComment() {
                 <TableCell>{reportedComment.rating}</TableCell>
                 <TableCell>{reportedComment.content}</TableCell>
                 <TableCell>{new Date(reportedComment.updatedAt).toLocaleString('en-US', {
-                              year: 'numeric',
-                              month: '2-digit',
-                              day: '2-digit',
-                              hour: '2-digit',
-                              minute: '2-digit',
-                              second: '2-digit',
-      })}</TableCell>
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                })}</TableCell>
                 <TableCell>
                   <Button onClick={() => handleOpen(reportedComment)}>
                     <KeyboardArrowRightIcon />
@@ -129,24 +130,22 @@ function ManageReportedComment() {
           </TableBody>
         </Table>
       </TableContainer>
-      <ReactPaginate
-      previousLabel={<KeyboardArrowLeftIcon/>}
-      nextLabel={<KeyboardArrowRightIcon/>}
-      breakLabel={"..."}
-      pageCount={pageCount}
-      marginPagesDisplayed={2}
-      pageRangeDisplayed={5}
-      onPageChange={handlePageClick}
-      containerClassName={"pagination"}  // Added a container class
-      subContainerClassName={"pagination li"}
-      activeClassName={"active"}
+
+      <Pagination
+        count={totalPages}
+        page={page}
+        size='large'
+        onChange={handlePageChange}
+        showFirstButton
+        showLastButton
+        className="pagination"
       />
 
-<Modal show={modalIsOpen} onHide={handleCloseModal}
-  style={{
-    marginTop: "50px",
-  }}
->
+      <Modal show={modalIsOpen} onHide={handleCloseModal}
+        style={{
+          marginTop: "50px",
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Update Reported Comment</Modal.Title>
         </Modal.Header>
