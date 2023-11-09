@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import OrderHistory from "../../order/OrderHistory";
 
 const MyAccount = () => {
   let accessToken = localStorage.getItem("accessToken");
@@ -36,7 +37,7 @@ const MyAccount = () => {
         <div className="order__history">
           <div className="order__history__header">Order History</div>
           <div className="order__history__detail">
-            You have not place any orders yet
+            <OrderHistory></OrderHistory>
           </div>
         </div>
       </div>

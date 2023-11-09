@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { defaultImage } from '../../Context/DefaultImage';
 import { Button } from '@mui/material';
 import {
     MDBBtn,
@@ -22,7 +23,7 @@ const CreateOrder = () => {
     const handleShopping = () => {
         navigate('/')
     }
-
+    
     const handlePayment = async () => {
         const items = products.map(product => product.id);
         const config = {
@@ -41,7 +42,25 @@ const CreateOrder = () => {
    
     useEffect(() => {
         setProducts(cartItems.items);
+    
+        const fetchImage = async (items) => {
+            try {
+                const updatedItems = await Promise.all(
+                    items.map(async (item) => {
+                        const res = await axios.get(`http://localhost:3000/v1/images/${item.images[0]}`);
+                        const imageRes = res.data ? res.data.image.url : defaultImage;
+                        return { ...item, imageRes: imageRes };
+                    })
+                );
+                setProducts(updatedItems); 
+            } catch (err) {
+                console.log(err);
+            }
+        };
+    
+        fetchImage(cartItems.items);
     }, [cartItems.items]);
+    
    
     return (
         <>
@@ -75,25 +94,25 @@ const CreateOrder = () => {
                             <MDBCardBody className="p-4">
                                 {products.map((product) => (
                                    <MDBRow className="align-items-center">
-                                   <MDBCol md="2" className="d-flex justify-content-center">
-                                       <MDBCardImage fluid src={product.image} alt="Product Image" />
+                                   <MDBCol md="2" className="d-flex justify-content-left">
+                                       <MDBCardImage fluid src={product.imageRes} alt="Product Image" style={{objectFit: "cover", height: "80px"}} />
                                    </MDBCol>
                                
-                                   <MDBCol md="2" className="d-flex justify-content-center">
+                                   <MDBCol md="2" className="d-flex justify-content-left">
                                        <div>
                                            <p className="small text-muted mb-4 pb-2">Name</p>
                                            <p className="lead fw-normal mb-0">{product.name}</p>
                                        </div>
                                    </MDBCol>
                                
-                                   <MDBCol md="6" className="d-flex justify-content-center">
+                                   <MDBCol md="6" className="d-flex justify-content-left">
                                        <div>
                                            <p className="small text-muted mb-4 pb-2">Category</p>
                                            <p className="lead fw-normal mb-0">{product.category}</p>
                                        </div>
                                    </MDBCol>
                                
-                                   <MDBCol md="2" className="d-flex justify-content-center">
+                                   <MDBCol md="2" className="d-flex justify-content-left">
                                        <div>
                                            <p className="small text-muted mb-4 pb-2">Price</p>
                                            <p className="lead fw-normal mb-0">{product.price}</p>

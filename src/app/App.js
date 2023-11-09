@@ -34,6 +34,9 @@ import CreateOrder from "../components/order/CreateOrder";
 import MyProducts from "../components/Account/MyProducts/MyProducts";
 import ManageMyProducts from "../components/Account/ManageMyProducts/ManageMyProducts";
 import UserView from "../routes/UserView";
+import OrderList from "../components/order/OrderList";
+import ManageSendProduct from "../components/Roles/Courier/ManageSendProduct";
+import ManageDeliveringProduct from "../components/Roles/Courier/ManageDeliveringProduct";
 
 function App() {
   return (
@@ -93,7 +96,7 @@ function App() {
               <Route path=":id" element={<ItemView />} />
             </Route>
           </Route>
-          
+          <Route path="/orderList" element={<OrderList />} />
           <Route path="/createOrder" element={<CreateOrder />} />
 
           <Route path="/wishlist" element={<Wishlist />} />
@@ -109,7 +112,7 @@ function App() {
         </Route>
 
         <Route element={<CourierLayout />}>
-          <Route path="/courier" element={<CourierPage />} />
+          <Route path="/courier" element={<ManageDeliveringProduct />} />
           <Route path="/*" element={<CourierPage />} />
         </Route>
       </Routes>

@@ -299,7 +299,6 @@ export default function Admin() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           {menudata === "Dashboard" && <Dashboard/>}       
-          {menudata === "Manage Send Product" && <ManageSendProduct/>}
       </Box>
     </Box>
   );

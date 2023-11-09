@@ -24,6 +24,10 @@ export default function FadeMenu() {
     setAnchorEl(null);
   };
 
+  const handleOrder = () => {
+    setAnchorEl(null);
+    navigate("/orderList")
+  }
   const handleLogin = () => {
     setAnchorEl(null);
     navigate("/account/login");
@@ -84,7 +88,7 @@ export default function FadeMenu() {
               <SettingsIcon sx={{ mr: 1 }} />
               My Account
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={handleOrder}>
               <HistoryIcon sx={{ mr: 1 }} />
               Order List
             </MenuItem>

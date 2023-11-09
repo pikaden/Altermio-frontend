@@ -5,7 +5,7 @@ import "../Admin/ManageProduct.css";
 import axios from "axios";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-function ManageSendProduct() {
+function ManageDeliveringProduct() {
   let accessToken = localStorage.getItem("accessToken");
   const [ orders, setOrders] = useState([])
   const config = {
@@ -17,7 +17,7 @@ function ManageSendProduct() {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/v1/order/courier`,
+        `http://localhost:3000/v1/order/deliveringOrder`,
         config
       );
       const data = response.data;
@@ -27,7 +27,7 @@ function ManageSendProduct() {
     }
   };
   const handleAccept = async (order) => {
-    const response = await axios.post('http://localhost:3000/v1/order/courierAccept', {
+    const response = await axios.post('http://localhost:3000/v1/order/courierDelivered', {
             orderId: order._id
         }, config)
         if (response.status === 200){
@@ -83,4 +83,4 @@ function ManageSendProduct() {
   );
 }
 
-export default ManageSendProduct;
+export default ManageDeliveringProduct;
