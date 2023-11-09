@@ -47,7 +47,7 @@ const User = (props) => {
     };
     const fetchProducts = async () => {
       await axios
-        .get(`http://localhost:3000/v1/products/${props.user.results.id}`)
+        .get(`http://localhost:3000/v1/products/user/${props.user.results.id}`)
         .then((res) => {
           // console.log(res.data);
           setProduct(res.data);
