@@ -61,7 +61,6 @@ function App() {
             <Route path="me" element={<MyAccount />} />
             <Route path="manage" element={<ManageAccount />} />
             <Route path=":id" element={<UserView />} />
-            <Route path="*" element={<Login />} />
           </Route>
 
           <Route path="/shop" element={<Shop />} />
