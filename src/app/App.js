@@ -59,10 +59,7 @@ function App() {
           <Route path="/account">
             <Route path="me" element={<MyAccount />} />
             <Route path="manage" element={<ManageAccount />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
             <Route path=":id" element={<UserView />} />
-            <Route path="*" element={<Login />} />
           </Route>
 
           <Route path="/shop" element={<Shop />} />
