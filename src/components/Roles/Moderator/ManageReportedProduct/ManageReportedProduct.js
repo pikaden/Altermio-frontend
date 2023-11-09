@@ -105,7 +105,7 @@ function ManageReportedProduct() {
               <TableCell>Status</TableCell>
               <TableCell>Brand</TableCell>
               <TableCell>Activation</TableCell>
-              <TableCell>Verification</TableCell>
+              {/* <TableCell>Verification</TableCell> */}
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -118,13 +118,13 @@ function ManageReportedProduct() {
                 <TableCell>{product.description}</TableCell>
                 <TableCell>{product.state}</TableCell>
                 <TableCell>{product.brand}</TableCell>
-                <TableCell>
-                  <div className={`verification-badge ${product.activate === 'pending' ? "inactive" : "active"}`}>
-                    {product.activate === 'pending' ? "Inactive" : "Active"}
+                {/* <TableCell>
+                  <div className={`verification-badge ${product.activate === 'pending' ? "pending" : "inactive"}`}>
+                    {product.activate === 'pending' ? "Pending" : "Inactive"}
                   </div>
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
-                  {/* moderator only show pending request */}
+                  {/* moderator only show pending report */}
                   <div className={`verification-badge pending`}>
                     Pending
                   </div>

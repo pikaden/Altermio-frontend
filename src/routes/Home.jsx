@@ -19,7 +19,7 @@ const Home = () => {
     }
 
     const fetchProduct = async () => {
-        await axios.get("http://localhost:3000/v1/products")
+        await axios.get("http://localhost:3000/v1/products?activate=accept")
             .then(res => setFeaturedItems(res.data))
             .catch(err => console.log(err))
     }
