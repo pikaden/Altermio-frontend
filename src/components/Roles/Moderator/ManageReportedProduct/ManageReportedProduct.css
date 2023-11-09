@@ -1,0 +1,9 @@
+.verification-badge.active {
+    border: 2px solid green;
+    color: green;
+  }
+  
+  .verification-badge.inactive {
+    border: 2px solid red;
+    color: red;
+  }

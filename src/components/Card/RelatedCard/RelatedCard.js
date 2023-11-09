@@ -4,13 +4,13 @@ import axios from 'axios';
 import RelatedCardDetail from './Detail/RelatedCardDetail';
 import ReactLoading from 'react-loading';
 import RelatedCardImage from './Image/RelatedCardImage';
+import { defaultImage } from '../../../Context/DefaultImage';
 
 const RelatedCard = (props) => {
 
     const [item, setItem] = useState()
     
-    // TODO: change default image url
-    const defaultImageUrl = 'https://bocdn.ecotree.green/blog/0001/01/ad46dbb447cd0e9a6aeecd64cc2bd332b0cbcb79.jpeg?d=960x540';
+    const defaultImageUrl = defaultImage;
 
     
     useEffect(() => {

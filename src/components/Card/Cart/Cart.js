@@ -8,6 +8,8 @@ import CartCard from './CartCard/CartCard';
 import './Cart.css'
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 
 
 const style = {
@@ -26,6 +28,7 @@ const style = {
 };
 
 const Cart = () => {
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -38,19 +41,12 @@ const Cart = () => {
 
     const handleCheckout = async () => {
         if(cartItems.totalAmount > 0){
-            const config = {
-                reason: 'checkout',
-                amount: cartItems.totalAmount
-            }
 
-        await axios.post("http://localhost:5000/api/payment", config)
-            .then((res) => {
-                    console.log(res.data)
-                    window.location.replace(res.data)
-                    handleCheckoutOpen()
-                }
-            )
-            .catch((err) => console.log(err))
+            // const productListParam = productIds.join(',');
+            const productListParam = cartItems.items.map(item => item.id)
+            // Navigate đến route /createOrder với tham số productListParam
+            navigate(`/createOrder?productIds=${productListParam}`);
+            handleClose()
         }
         else {
             return

@@ -4,10 +4,10 @@ import ProductCarouselImage from './Images/ItemCarouselImage';
 import {
   Magnifier
 } from "@vanyapr/react-image-magnifiers";
+import { defaultImage } from '../../../Context/DefaultImage';
 
 const ProductCarousel = (props) => {
-  // TODO: change default image url
-  const defaultImageUrl = 'https://bocdn.ecotree.green/blog/0001/01/ad46dbb447cd0e9a6aeecd64cc2bd332b0cbcb79.jpeg?d=960x540';
+  const defaultImageUrl = defaultImage;
 
   return (
     <div className="product__carousel__container">
@@ -28,7 +28,7 @@ const ProductCarousel = (props) => {
         {props.item.images.length !== 0 &&
           <Carousel variant="dark" interval={4000} pause={'hover'}>
             {props.item.images.map(imageId => (
-              <Carousel.Item>
+              <Carousel.Item key={imageId}>
                 <ProductCarouselImage image={imageId} />
               </Carousel.Item>
             ))}

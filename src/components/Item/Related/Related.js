@@ -33,7 +33,7 @@ const Related = (props) => {
             </div>
             <div className="related__card__container">
                 <div className="related__product__card">
-                    {products && products.map((product) => <RelatedCard item={product} />)}
+                    {products && products.map((product) => <RelatedCard key={product.id} item={product} />)}
                 </div>
             </div>
         </div>

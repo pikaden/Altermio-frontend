@@ -170,8 +170,8 @@ export default function Register() {
         address: address,
       })
       .then((response) => {
-        // open _blank payment link
-        window.open(response.data);
+        alert('Sign up successfully!');
+        navigate('/account/login');
       })
       .catch((error) => {
         console.log(error);
