@@ -23,10 +23,11 @@ import PeopleIcon from '@mui/icons-material/People';
 import InvetoryIcon from '@mui/icons-material/Inventory';
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import Dashboard from './Dashboard';
-import ManageSendProduct from './ManageSendProduct';
 import { useNavigate } from "react-router-dom";
 import { Title} from '@mui/icons-material';
 import { Button, MenuItem, Menu } from "@mui/material";
+import ManageDeliveringProduct from './ManageDeliveringProduct';
+import ManageSendProduct from './ManageSendProduct';
 
 
 
@@ -209,7 +210,7 @@ export default function Admin() {
         </DrawerHeader>
         <Divider />
         <List>
-        {['Dashboard', 'Manage Send Product'].map((text, index) => (
+        {['Dashboard', 'Manage Send Product', 'Manage Delivering Product'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => {
               setMenudata(text)
               console.log(text)
@@ -234,71 +235,13 @@ export default function Admin() {
               </ListItemButton>
             </ListItem>
           ))}
-            {/* <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setMenudata("Request refund")}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                 <DocumentIcon />
-                </ListItemIcon>
-                <ListItemText primary="Request refund" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={() =>setMenudata("Accounts")}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                 <PeopleIcon />
-                </ListItemIcon>
-                <ListItemText primary="Accounts" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={() =>setMenudata("Products")}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                 <InvetoryIcon />
-                </ListItemIcon>
-                <ListItemText primary="Products" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem> */}
         </List>
         <Divider/>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          {menudata === "Dashboard" && <Dashboard/>}       
+      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 7 }}>
+          {menudata === "Dashboard" && <Dashboard/>}
+          {menudata === "Manage Send Product" && <ManageSendProduct/>}
+          {menudata === "Manage Delivering Product" && <ManageDeliveringProduct/>}       
       </Box>
     </Box>
   );
