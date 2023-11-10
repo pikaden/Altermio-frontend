@@ -25,14 +25,27 @@ function ManageProducts() {
     await axios.get(`http://localhost:3000/v1/products/manageProducts/all?activate=accept&page=${page}&limit=8`, { headers: { "Authorization": `Bearer ${accessToken}` } }).then((response) => {
 
       console.log(response);
-      setProducts(response.data.results);
+      fetchCategory(response.data.results)
       setTotalPages(response.data.totalPages);
     })
       .catch((error) => {
         console.log(error);
       });
   };
-
+    const fetchCategory = async (products) => {
+      try {
+        const updatedItems = await Promise.all(
+          products.map(async (item) => {
+                const res = await axios.get(`http://localhost:3000/v1/productLists/manage/${item.category}`);
+                return { ...item, categoryName: res.data.results.categoryName };
+            })
+        );
+        setProducts(updatedItems); 
+    } catch (err) {
+        console.log(err);
+    }
+  
+    }
 
   // const handleUpdateProduct = async () => {
   //   console.log(accessToken);
@@ -128,7 +141,7 @@ function ManageProducts() {
                 hover
               >
                 <TableCell>{product.name}</TableCell>
-                <TableCell>{product.category}</TableCell>
+                <TableCell>{product.categoryName}</TableCell>
                 <TableCell>{product.price}</TableCell>
                 <TableCell>{product.description}</TableCell>
                 <TableCell>{product.state}</TableCell>
@@ -213,7 +226,7 @@ function ManageProducts() {
               className="col-md-8 textArea"
               type="text"
               id="backHTML"
-              value={selectedproduct?.category}
+              value={selectedproduct?.categoryName}
               onChange={(e) => {
                 setSelectedproduct({ ...selectedproduct, category: e.target.value });
               }}
