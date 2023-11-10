@@ -111,7 +111,7 @@ function App() {
         </Route>
 
         <Route element={<CourierLayout />}>
-          <Route path="/courier" element={<ManageDeliveringProduct />} />
+          <Route path="/courier" element={<CourierPage />} />
           <Route path="/*" element={<CourierPage />} />
         </Route>
       </Routes>
