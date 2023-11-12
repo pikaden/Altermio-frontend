@@ -56,7 +56,9 @@ function ManageDeliveringProduct() {
         <TableHead>
           <TableRow>
             <TableCell>Product Name</TableCell>
-            <TableCell>Total Price</TableCell>
+            <TableCell>Customer Name</TableCell>
+            <TableCell>Address</TableCell>
+            <TableCell>Phone Number</TableCell>
             <TableCell>Status</TableCell>
             <TableCell></TableCell>
           </TableRow>
@@ -67,7 +69,9 @@ function ManageDeliveringProduct() {
               hover
             >
               <TableCell>{order.item.name}</TableCell>
-              <TableCell>{order.totalPrice}</TableCell>
+              <TableCell>{order.customerId.firstName} {order.customerId.lastName}</TableCell>
+              <TableCell>{order.customerId.address}</TableCell>
+              <TableCell>{order.customerId.phoneNumber}</TableCell>
               <TableCell>{order.status}</TableCell>
               <TableCell>
                   <Button onClick={() => handleAccept(order)}>
