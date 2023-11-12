@@ -210,7 +210,7 @@ export default function Admin() {
         </DrawerHeader>
         <Divider />
         <List>
-        {['Dashboard', 'Manage Send Product', 'Manage Delivering Product'].map((text, index) => (
+        {['Dashboard', 'Processing Orders', 'Delivering Orders'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => {
               setMenudata(text)
               console.log(text)
@@ -240,8 +240,8 @@ export default function Admin() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 7 }}>
           {menudata === "Dashboard" && <Dashboard/>}
-          {menudata === "Manage Send Product" && <ManageSendProduct/>}
-          {menudata === "Manage Delivering Product" && <ManageDeliveringProduct/>}       
+          {menudata === "Processing Orders" && <ManageSendProduct/>}
+          {menudata === "Delivering Orders" && <ManageDeliveringProduct/>}       
       </Box>
     </Box>
   );

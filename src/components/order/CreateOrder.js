@@ -24,6 +24,20 @@ const CreateOrder = () => {
         navigate('/')
     }
     
+    const fetchCategory = async (products) => {
+        try {
+          const updatedItems = await Promise.all(
+            products.map(async (item) => {
+                  const res = await axios.get(`http://localhost:3000/v1/productLists/manage/${item.category}`);
+                  return { ...item, categoryName: res.data.results.categoryName };
+              })
+          );
+          setProducts(updatedItems); 
+      } catch (err) {
+          console.log(err);
+      }
+    
+      }
     const handlePayment = async () => {
         const items = products.map(product => product.id);
         const config = {
@@ -39,27 +53,25 @@ const CreateOrder = () => {
             cartItems.clearAll()
           }
     };
+    const fetchImage = async (items) => {
+        try {
+            const updatedItems = await Promise.all(
+                items.map(async (item) => {
+                    const res = await axios.get(`http://localhost:3000/v1/images/${item.images[0]}`);
+                    const imageRes = res.data ? res.data.image.url : defaultImage;
+                    return { ...item, imageRes: imageRes };
+                })
+            );
+            fetchCategory(updatedItems) 
+        } catch (err) {
+            console.log(err);
+        }
+    };
    
     useEffect(() => {
-        setProducts(cartItems.items);
-    
-        const fetchImage = async (items) => {
-            try {
-                const updatedItems = await Promise.all(
-                    items.map(async (item) => {
-                        const res = await axios.get(`http://localhost:3000/v1/images/${item.images[0]}`);
-                        const imageRes = res.data ? res.data.image.url : defaultImage;
-                        return { ...item, imageRes: imageRes };
-                    })
-                );
-                setProducts(updatedItems); 
-            } catch (err) {
-                console.log(err);
-            }
-        };
-    
-        fetchImage(cartItems.items);
-    }, [cartItems.items]);
+      fetchImage(cartItems.items)
+        
+    }, []);
     
    
     return (
@@ -98,17 +110,17 @@ const CreateOrder = () => {
                                        <MDBCardImage fluid src={product.imageRes} alt="Product Image" style={{objectFit: "cover", height: "80px"}} />
                                    </MDBCol>
                                
-                                   <MDBCol md="2" className="d-flex justify-content-left">
+                                   <MDBCol md="4" className="d-flex justify-content-left">
                                        <div>
                                            <p className="small text-muted mb-4 pb-2">Name</p>
                                            <p className="lead fw-normal mb-0">{product.name}</p>
                                        </div>
                                    </MDBCol>
                                
-                                   <MDBCol md="6" className="d-flex justify-content-left">
+                                   <MDBCol md="4" className="d-flex justify-content-left">
                                        <div>
                                            <p className="small text-muted mb-4 pb-2">Category</p>
-                                           <p className="lead fw-normal mb-0">{product.category}</p>
+                                           <p className="lead fw-normal mb-0">{product.categoryName}</p>
                                        </div>
                                    </MDBCol>
                                
